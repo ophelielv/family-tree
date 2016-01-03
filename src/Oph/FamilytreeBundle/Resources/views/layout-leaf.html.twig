@@ -1,0 +1,35 @@
+{# src/OC/PlatformBundle/Resources/views/layout.html.twig #}
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="page-header">
+        <div class="container">
+            
+            <div class="col-md-2">
+                {% if person.img is not null %}
+                    <img src="{{ (person.img.webPath ) | imagine_filter('my_thumb') }}" alt="{{person.img.alt}}"/>
+                {% else %}
+                     <img src="{{ 'bundles/ophfamilytree/images/pas-d-avatar.png' | imagine_filter('my_thumb') }}" alt="pas d'avatar"/>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-10">
+                <h1>{{person.firstName}} {{person.name}} <small>{{person.description}}</small></h1>
+            </div>
+        </div><!--container-->
+    </div><!--end page-header-->
+
+
+  {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+
+  {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+  {% block ophfamilytree_body %}
+  {% endblock %}
+
+{% endblock %}

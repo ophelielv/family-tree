@@ -1,0 +1,56 @@
+{# Photo index.html.twig #}
+{% extends "OphFamilytreeBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Toutes les photos
+{% endblock %}
+
+{% block ophfamilytree_body %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Famille de Anita & Georges <small>Viva la généalogia</small></h1>
+        </div><!--end page-header-->
+    </div>
+
+
+{% block body -%}
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Toutes les photos <small>on est dans de l'admin (presque je c pas) </small></h1>
+        </div><!--end page-header-->
+    </div>
+    
+    <div class="container">
+        <div class="row-fluid">
+            {% for entity in entities %}
+            
+                <div class="col-sm-4 col-md-2">
+                    <div class="thumbnail">
+                        <img src="{{ (entity.image.path  ~ entity.image.name) | imagine_filter('my_thumb') }}" alt="{{entity.image.alt}}"/>
+                        <div class="caption">
+                            {% if entity.datePhoto is not null %}
+                                <p>{{ entity.datePhoto |date('Y-m-d')}}</p>
+                            {%else%}
+                                <p>Date inconnue</p>
+                            {% endif %}
+                <!--            <p>...</p>   -->
+                      <!--     <p><a href="{# path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-primary" role="button">Voir</a> <a href="{# path('oph_familytree_edit', {'id': person.id}) #}" class="btn btn-default" role="button">Editer</a></p>-->
+                        </div><!--end caption-->
+                    </div><!--end thumbnail-->
+                </div><!--end col-->
+                
+            {% endfor %}
+
+        </div><!--end row-fluid-->
+    </div><!--end container-->
+     
+     <div class="container">
+         <p><a href="#" class="btn btn-default" role="button">Ajouter des photos</a> <a href="#" class="btn btn-default" role="button">Editer</a></p>
+     </div><!--end container-->
+    
+
+
+    {% endblock %}
+
+{% endblock %}

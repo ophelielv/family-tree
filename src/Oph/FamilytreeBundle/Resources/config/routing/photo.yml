@@ -1,0 +1,30 @@
+admin_photo:
+    path:     /
+    defaults: { _controller: "OphFamilytreeBundle:Photo:index" }
+
+admin_photo_show:
+    path:     /{id}/show
+    defaults: { _controller: "OphFamilytreeBundle:Photo:show" }
+
+admin_photo_new:
+    path:     /new
+    defaults: { _controller: "OphFamilytreeBundle:Photo:new" }
+
+admin_photo_create:
+    path:     /create
+    defaults: { _controller: "OphFamilytreeBundle:Photo:create" }
+    methods:  POST
+
+admin_photo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "OphFamilytreeBundle:Photo:edit" }
+
+admin_photo_update:
+    path:     /{id}/update
+    defaults: { _controller: "OphFamilytreeBundle:Photo:update" }
+    methods:  [POST, PUT]
+
+admin_photo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "OphFamilytreeBundle:Photo:delete" }
+    methods:  [POST, DELETE]

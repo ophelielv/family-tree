@@ -1,0 +1,50 @@
+oph_familytree_homepage:
+    path:     /
+    defaults: { _controller: OphFamilytreeBundle:Leaf:index }
+    
+oph_familytree_add:
+    path:     /add/
+    defaults: { _controller: OphFamilytreeBundle:Leaf:add }
+
+oph_familytree_edit:
+    path:     /personne/edit/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:edit }
+    requirements:
+        id: \d+
+
+oph_familytree_edit_photos:
+    path:     /personne/galerie/editer/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:editPhotos }
+    requirements:
+        id: \d+
+
+oph_familytree_delete_photo:
+    path:     /personne/galerie/supprimer/{id}/{idPicture}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:deletePhoto }
+    requirements:
+        id: \d+
+        idPicture: \d+
+
+oph_familytree_delete_avatar:
+    path:     /personne/avatar/supprimer/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:deleteAvatar }
+    requirements:
+        id: \d+
+
+oph_familytree_delete_photo:
+    path:     /personne/galerie/supprimer/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:addPhotos }
+    requirements:
+        id: \d+
+
+oph_familytree_view:
+    path:     /personne/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:view }
+    requirements:
+        id: \d+
+
+oph_familytree_delete:
+    path:     /personne/supprimer/{id}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:delete }
+    requirements:
+        id: \d+

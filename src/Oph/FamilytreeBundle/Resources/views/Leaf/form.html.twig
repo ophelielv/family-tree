@@ -1,0 +1,107 @@
+<div class="container">
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    
+    <form method="post" {{ form_enctype(form) }}>
+    
+    {{ form_errors(form) }}
+    
+    <div class="well">
+      <h4>Identité</h4>
+      <div class="form-group">
+        {{ form_label(form.firstName, "Prénom", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_errors(form.firstName) }}
+        <div class="col-sm-4">
+          {{ form_widget(form.firstName, {'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        {{ form_label(form.name, "Nom", {'label_attr': {'class': 'col-sm-3 control-label'} }) }}
+        {{ form_errors(form.firstName) }}
+        <div class="col-sm-4">
+          {{ form_widget(form.name, {'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+          {{ form_label(form.name, "Description / Lien de parenté", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.description) }}
+        <div class="col-sm-4">
+          {{ form_widget(form.description, {'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+          {{ form_label(form.anitasFamily, "Appartient à la famille d'Anita", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.anitasFamily) }}
+          <div class="col-sm-1">
+              {{ form_widget(form.anitasFamily, {'attr': {'class': 'form-control'} }) }}
+          </div>
+      </div>
+  
+      <div class="form-group">
+          {{ form_label(form.georgesFamily, "Appartient à la famille de Georges", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.georgesFamily) }}
+          <div class="col-sm-1">
+              {{ form_widget(form.georgesFamily, {'attr': {'class': 'form-control'} }) }}
+          </div>
+      </div>
+      
+      <div class="form-group">
+          {{ form_label(form.gender, "Genre", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.gender) }}
+          <div class="col-sm-3">
+              {{ form_widget(form.gender, {'attr': {'class': 'form-control'} }) }}
+          </div>
+      </div>
+      
+      <div class="form-group">
+          {{ form_label(form.dateOfBirth, "Né(e) le", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.dateOfBirth) }}
+          {{ form_widget(form.dateOfBirth, {'attr': {'class': 'col-sm-3'} }) }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_label(form.placeOfBirth, "à", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_errors(form.placeOfBirth) }}
+        <div class="col-sm-4">
+          {{ form_widget(form.placeOfBirth, {'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>
+  
+      <div class="form-group">
+          {{ form_label(form.dateOfDeath, "Décédé(e) le", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+          {{ form_errors(form.dateOfDeath) }}
+          {{ form_widget(form.dateOfDeath, {'attr': {'class': 'col-sm-3'} }) }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_label(form.placeOfDeath, "à", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_errors(form.placeOfDeath) }}
+        <div class="col-sm-4">
+          {{ form_widget(form.placeOfDeath, {'attr': {'class': 'form-control'} }) }}
+        </div>
+      </div>  
+    </div><!--end well-->    
+    
+    <div class="well">
+      <div class="container">
+          <h4>Portrait</h4>
+          
+          <div class="col-md-6">
+            {{ form_row(form.img, { 'label': 'Changer de portrait' }) }}
+          </div>
+          
+        </div>
+    </div><!--end well-->
+
+    <div class="container">   
+      <div class=" form-group">
+         {{ form_row(form.Enregistrer, { 'label': 'Terminer et enregistrer' }) }}
+      </div>
+    </div><!--end container-->
+    
+    {{ form_end(form) }}
+
+
+</div><!--end container-->

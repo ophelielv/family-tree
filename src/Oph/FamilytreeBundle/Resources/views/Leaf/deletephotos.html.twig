@@ -1,0 +1,36 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/form.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Galerie - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+
+    <div class="container">
+        <div class="row-fluid">
+            <h3>Supprimer la photo de la galerie ?</h3>
+            <img src="{{ (picture.img.webPath) | imagine_filter('my_thumb') }}" alt="{{picture.img.alt}}"/>
+            
+            <form action="{{ path('oph_familytree_delete_photo', {'id': person.id, 'idPicture': picture.id}) }}" method="post">
+            
+            {# Ici j'ai écrit le bouton de soumission à la main #}
+            <p> 
+               <input type="submit" value="Confirmer la suppression" class="btn btn-danger" />
+            </p>
+            {# Ceci va générer le champ CSRF #}
+            {{ form_rest(form) }}
+            </form>
+            
+            
+        </div><!--end row-fluid-->
+    </div><!--end container-->
+    <hr>
+
+<div class="container">
+       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+</div>
+
+
+{% endblock %}

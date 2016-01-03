@@ -1,0 +1,48 @@
+{# editgaleriephotosm.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Galerie - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+    
+    <div class="container">
+        <h2>Modifier la galerie</h2>
+        <div class="row-fluid">
+            {% if person.gallery is empty %}
+            <p>Aucune photo</p>
+            {% else %}
+            
+                {% for gallery in person.gallery %}
+                
+                    <div class="col-sm-4 col-md-2">
+                        <div class="thumbnail">
+                            <img src="{{ (gallery.img.webPath) | imagine_filter('my_thumb') }}" alt="{{gallery.img.alt}}"/>
+                            <div class="caption">
+                                {% if gallery.datePicture is not null %}
+                                    <p>Photo prise le : {{ gallery.datePicture |date('Y-m-d')}}</p>
+                                {%else%}
+                                    <p>Date inconnue</p>
+                                {% endif %}
+                               <p><a href="{{ path('oph_familytree_delete_photo', {'id': person.id, 'idPicture': gallery.id}) }}" class="btn btn-danger" role="button">Supprimer</a></p>
+                            </div><!--end caption-->
+                        </div><!--end thumbnail-->
+                    </div><!--end col-->
+                    
+                {% endfor %}
+            {% endif%}
+
+        </div><!--end row-fluid-->
+    </div><!--end container-->
+    <hr>
+<h3>Ajouter</h3>
+
+{{ include("OphFamilytreeBundle:Leaf:formaddphotos.html.twig") }}
+
+<div class="container">
+       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+</div>
+
+{% endblock %}

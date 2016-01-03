@@ -1,0 +1,44 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/index.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Accueil
+{% endblock %}
+
+{% block ophfamilytree_body %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Famille de Anita & Georges <small>Viva la généalogia</small></h1>
+        </div><!--end page-header-->
+    </div>
+    
+    <div class="container">
+        <div class="row-fluid">
+            {% for person in persons %}
+            
+                <div class="col-sm-6 col-md-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            {{ person.firstName }} {{ person.name }}
+                        </div><!--end panel HEADING-->
+                        <div class="panel-body">
+                            {% if person.img is not null %}
+                                <img src="{{ (person.img.webPath ) | imagine_filter('my_thumb') }}" alt="{{person.img.alt}}"/>
+                            {% else %}
+                                 <img src="{{ 'bundles/ophfamilytree/images/pas-d-avatar.png' | imagine_filter('my_thumb') }}" alt="pas d'avatar"/>
+                            {% endif %}
+                            
+                            <p>{% if person.dateOfBirth is not null %}{{person.dateOfBirth|date('Y')}}{%else%}--{% endif %} ~ {% if person.dateOfDeath is not null %}{{person.dateOfDeath|date('Y')}}{%else%}--{% endif %}</p>
+                             
+                            <p><a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-default" role="button">Voir</a><!-- <a href="{# path('oph_familytree_edit', {'id': person.id}) #}" class="btn btn-default" role="button">Editer</a>--></p>
+                        </div><!--end panel content-->
+                    </div><!--end panel group-->
+                </div><!--end col-->                        
+              
+            {% endfor %}
+        </div><!--end row-fluid-->
+    </div><!--end container-->
+
+    
+{% endblock %}

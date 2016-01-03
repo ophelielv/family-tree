@@ -1,0 +1,28 @@
+{# deleue.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Supprimer - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+
+    <div class="container">
+        <h2>Supprimer une fiche</h2>
+        <p>Etes-vous certain de vouloir supprimer la fiche de {{person.firstName}} {{person.name}} ?</p>
+        
+        {# On met l'id de l'annonce dans la route de l'action du formulaire #}
+        <form action="{{ path('oph_familytree_delete', {'id': person.id}) }}" method="post">
+ 
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+       <p> 
+           <input type="submit" value="Confirmer la suppression" class="btn btn-danger" />
+            <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a>
+        </p>
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+        </form>
+    </div>
+
+{% endblock %}
