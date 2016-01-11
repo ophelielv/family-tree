@@ -15,10 +15,11 @@ class DocumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title',  'text')
-            ->add('description',  'text',array('required' => false))
-            ->add('dateDocument', 'birthday', array('label'=>'Date', 'years' => range(1800, date('Y')),'required' => false, 'empty_value' => '--'))
-            ->add('img') //ou ->add('image',  new ImageType())
+            ->add('img',            new ImgType(),   array('label' => 'Choisir un fichier','required' => false))
+            ->add('title',          'text',     array('label'=>'Titre') ) 
+            ->add('description',    'textarea', array( 'attr' => array('cols' => '100', 'rows' => '8') ,'label'=>'Description','required' => false))
+            ->add('dateDocument',   'birthday', array('label'=>'Date',  'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
+            ;
         ;
     }
     

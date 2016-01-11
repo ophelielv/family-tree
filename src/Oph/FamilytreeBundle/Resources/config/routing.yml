@@ -7,44 +7,58 @@ oph_familytree_add:
     defaults: { _controller: OphFamilytreeBundle:Leaf:add }
 
 oph_familytree_edit:
-    path:     /personne/edit/{id}
+    path:     /personne/{id}/edit
     defaults: { _controller: OphFamilytreeBundle:Leaf:edit }
     requirements:
         id: \d+
 
 oph_familytree_edit_photos:
-    path:     /personne/galerie/editer/{id}
+    path:     /personne/{id}/galerie/editer
     defaults: { _controller: OphFamilytreeBundle:Leaf:editPhotos }
     requirements:
         id: \d+
 
+oph_familytree_edit_documents:
+    path:     /personne/{id}/documents/editer
+    defaults: { _controller: OphFamilytreeBundle:Leaf:editDocuments }
+    requirements:
+        id: \d+
+
+oph_familytree_edit_one_document:
+    path:     /personne/{id}/documents/editer/{idDocument}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:editOneDocument }
+    requirements:
+        id: \d+
+        idDocument: \d+
+
+oph_familytree_delete:
+    path:     /personne/{id}/supprimer
+    defaults: { _controller: OphFamilytreeBundle:Leaf:delete }
+    requirements:
+        id: \d+
+
+oph_familytree_delete_avatar:
+    path:     /personne/{id}/avatar/supprimer
+    defaults: { _controller: OphFamilytreeBundle:Leaf:deleteAvatar }
+    requirements:
+        id: \d+
+
+oph_familytree_delete_document:
+    path:     /personne/{id}/documents/supprimer/{idDocument}
+    defaults: { _controller: OphFamilytreeBundle:Leaf:deleteDocument }
+    requirements:
+        id: \d+
+        idDocument: \d+
+
 oph_familytree_delete_photo:
-    path:     /personne/galerie/supprimer/{id}/{idPicture}
+    path:     /personne/{id}/galerie/supprimer/{idPicture}
     defaults: { _controller: OphFamilytreeBundle:Leaf:deletePhoto }
     requirements:
         id: \d+
         idPicture: \d+
 
-oph_familytree_delete_avatar:
-    path:     /personne/avatar/supprimer/{id}
-    defaults: { _controller: OphFamilytreeBundle:Leaf:deleteAvatar }
-    requirements:
-        id: \d+
-
-oph_familytree_delete_photo:
-    path:     /personne/galerie/supprimer/{id}
-    defaults: { _controller: OphFamilytreeBundle:Leaf:addPhotos }
-    requirements:
-        id: \d+
-
 oph_familytree_view:
     path:     /personne/{id}
     defaults: { _controller: OphFamilytreeBundle:Leaf:view }
-    requirements:
-        id: \d+
-
-oph_familytree_delete:
-    path:     /personne/supprimer/{id}
-    defaults: { _controller: OphFamilytreeBundle:Leaf:delete }
     requirements:
         id: \d+

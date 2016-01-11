@@ -87,4 +87,9 @@ liip_imagine:
         my_heighten:
             filters:
                 relative_resize: { heighten: 500 } # Transforms 50x40 to 75x60
+        
+        doc_widen:
+            filters:
+                relative_resize: { widen: 900 }    # Transforms 50x40 to 32x26
+
 

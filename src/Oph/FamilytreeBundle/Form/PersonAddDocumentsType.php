@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PictureType extends AbstractType
+class PersonAddDocumentsType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,21 +14,21 @@ class PictureType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('img',  new ImgType(),  array('label'=>'Charger une image'))
-            ->add('datePicture', 'birthday', array('label'=>'Date', 'years' => range(1800, date('Y')),'required' => false, 'empty_value' => '--'))
-            //->add('image') généré auto
-            
-        ;
+        $builder->add('uploadedDocuments', 'collection', array(  'type'=> new DocumentType(), 
+                                                            'label'=>'Documents',
+                                                            'allow_add'=> true, 
+                                                            'allow_delete' => true,
+                                                            'attr' => array('multiple' => 'multiple')))
+                ->add('Enregistrer',    'submit');
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Oph\FamilytreeBundle\Entity\Picture'
+            'data_class' => 'Oph\FamilytreeBundle\Entity\Person'
         ));
     }
 
@@ -37,6 +37,6 @@ class PictureType extends AbstractType
      */
     public function getName()
     {
-        return 'oph_familytreebundle_picture';
+        return 'oph_familytreebundle_person';
     }
 }

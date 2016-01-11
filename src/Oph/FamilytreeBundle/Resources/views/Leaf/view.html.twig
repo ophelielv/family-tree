@@ -9,20 +9,7 @@
 {% block ophfamilytree_body %}
 
     <div class="container">
-        <h2>Résumé</h2>
-        <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
-        Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
-    </div><!--end container-->
-    
-    <div class="container">
-        <h2>Documents</h2>
-            <p>Pas de documents !</p>
-            <a href="#" class="btn btn-primary" role="button">Ajouter des documents</a>
-    </div><!--end container documents-->
-   
-    
-        <div class="container">
-        <h2>Galerie</h2>
+        <h2 class="text-center">Galerie</h2>
      
         {% if person.gallery is not empty %}
         
@@ -69,12 +56,47 @@
             <p>Pas de photo!</p>
         {%endif%}
         
-         <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-primary" role="button">Modifier la galerie</a>
+         <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-primary" role="button">Editer la galerie</a>
     </div><!--end container galerie-->
+    
+    <div class="container resume">
+        <h2 class="text-center">Résumé</h2>
+        <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
+        Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
+    </div><!--end container-->
+    
+    
+    <div class="container">
+        <h2 class="text-center">Documents</h2>
+        
+            {% if person.listOfDocuments is empty %}
+                <p>Pas de document !</p>
+            
+            {% else %}
+            
+                {% for doc in person.listOfDocuments %}
+                    <div class="well">
+                        <h4 class="text-primary">{{ doc.title }} <small>Le {{doc.dateDocument|date('d-m-Y')}}</small></h4>
+                        <p>{{ doc.description|raw  }}</p>
+                        <button data-toggle="collapse" class="btn btn-default btn-lg" data-target="#doc-{{doc.id}}">
+                            <span class="glyphicon glyphicon-send"> Voir</span>
+                        </button>
+                        <div id="doc-{{doc.id}}" class="collapse">
+                           <img src="{{  (doc.img.webPath) | imagine_filter('doc_widen') }}" alt="{{doc.img.alt}}"/>
+                        </div>
+                    </div><!--end well-->
+                {%endfor%}
+            {%endif%}
+
+            
+            <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-primary" role="button">Editer les documents</a>
+    </div><!--end container documents-->
+   
+    
     
     <hr>
     
-    <div class="container">
+    <div class="text-center container">
         <p> 
             <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button">Editer la fiche</a>
             <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button">Supprimer</a>

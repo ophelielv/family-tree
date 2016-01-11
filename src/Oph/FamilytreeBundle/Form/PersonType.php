@@ -26,7 +26,7 @@ class PersonType extends AbstractType
                     ->add('dateOfDeath',    'birthday', array('label'=>'Date de décès', 'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
                     ->add('placeOfDeath',   'text',     array('label'=>'à', 'required' => false))
                  //   ->add('image',   new ImageType(),   array('required' => false))
-                    ->add('img',   new ImgType(),   array('label' => 'on change tout','required' => false))
+                    ->add('img',   new ImgType(),   array('label' => 'Choisir un fichier','required' => false))
                     ->add('Enregistrer',    'submit');
     }
     

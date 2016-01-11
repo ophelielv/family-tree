@@ -1,0 +1,20 @@
+{# editdocuments.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Documents - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+ 
+<div class="container">
+    <h3 class="text-center">Editer</h3>
+</div>
+{{ include("OphFamilytreeBundle:Leaf:formadddocuments.html.twig") }}
+
+<div class="container text-center">
+       <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-success" role="button">Retour à l'édition des documents</a>
+</div>
+
+{% endblock %}

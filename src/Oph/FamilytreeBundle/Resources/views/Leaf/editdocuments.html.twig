@@ -1,0 +1,50 @@
+{# editdocuments.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Documents - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+ 
+    <div class="container">
+        <h2 class="text-center">Editer les documents</h2>
+        <div class="row-fluid">
+            {% if person.listOfDocuments is empty %}
+                <p>Pas de document !</p>
+            {% else %}
+                {% for docs in person.listOfDocuments %}
+                
+                    <div class="col-sm-4 col-md-3">
+                        <div class="thumbnail">
+                            <img src="{{ (docs.img.webPath) | imagine_filter('my_thumb') }}" alt="{{docs.img.alt}}"/>
+                            <div class="caption text-center">
+                                <p><strong>{{docs.title}}</strong></p>
+                                {% if docs.dateDocument is not null %}
+                                    <p>Le {{ docs.dateDocument |date('d-m-Y')}}</p>
+                                {%else%}
+                                    <p>Date inconnue</p>
+                                {% endif %}
+                                <p><a href=" {{ path('oph_familytree_edit_one_document', { 'id': person.id,'idDocument': docs.id}) }}" class="btn btn-default" role="button">Editer</a>
+                                    <a href="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': docs.id}) }}" class="btn btn-danger" role="button">Supprimer</a>
+                                </p>
+                            </div><!--end caption-->
+                        </div><!--end thumbnail-->
+                    </div><!--end col-->
+                    
+                {% endfor %}
+            {% endif%}
+
+        </div><!--end row-fluid-->
+    </div><!--end container-->
+    <hr>
+<h3 class="text-center">Ajouter</h3>
+
+{{ include("OphFamilytreeBundle:Leaf:formadddocuments.html.twig") }}
+
+<div class="container text-center">
+       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+</div>
+
+{% endblock %}

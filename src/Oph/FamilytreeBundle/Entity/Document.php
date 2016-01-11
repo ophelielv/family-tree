@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Document
 {
     /**
-	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Image", cascade={"persist"})
+	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Img", cascade={"persist", "remove"})
 	 */
-	private $image;
+	private $img;
 	
     /**
      * @var integer
@@ -127,35 +127,35 @@ class Document
     }
 
     /**
-     * Set image
+     * Set img
      *
-     * @param \Oph\FamilytreeBundle\Entity\Image $image
+     * @param \Oph\FamilytreeBundle\Entity\Img $img
      * @return Document
      */
-    public function setImage(\Oph\FamilytreeBundle\Entity\Image $image = null)
+    public function setImg(\Oph\FamilytreeBundle\Entity\Img $img = null)
     {
-        $this->image = $image;
+        $this->img = $img;
 
         return $this;
     }
 
     /**
-     * Get image
+     * Get img
      *
-     * @return \Oph\FamilytreeBundle\Entity\Image 
+     * @return \Oph\FamilytreeBundle\Entity\Img 
      */
-    public function getImage()
+    public function getImg()
     {
-        return $this->image;
+        return $this->img;
     }
 
     /**
-     * Affichage d'une entité Image avec echo
-     * @return string Représentation de l'image
+     * Affichage d'une entité Img avec echo
+     * @return string Représentation de l'img
     */
     public function __toString()
     {
-        return $this->image->getAlt();
+        return $this->img->getAlt();
     }
    
 }

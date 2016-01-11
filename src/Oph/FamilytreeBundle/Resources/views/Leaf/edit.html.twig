@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block ophfamilytree_body %}
-<h1>Editer la fiche</h1>
+<h2 class="text-center">Editer la fiche</h2>
     
 {{ include("OphFamilytreeBundle:Leaf:form.html.twig") }}
 
-<div class="container">
+<div class="container text-center">
         <p> 
             
             <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button">Supprimer</a>

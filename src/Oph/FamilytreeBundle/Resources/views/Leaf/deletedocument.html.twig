@@ -3,17 +3,18 @@
 {% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
 
 {% block title %}
-  Galerie - {{ parent() }}
+  Documents - {{ parent() }}
 {% endblock %}
 
 {% block ophfamilytree_body %}
 
     <div class="container">
         <div class="row-fluid">
-            <h3>Supprimer la photo de la galerie ?</h3>
-            <img src="{{ (picture.img.webPath) | imagine_filter('my_thumb') }}" alt="{{picture.img.alt}}"/>
+            <h3>Supprimer le document ?</h3>
+            <p><strong>{{ document.title }} </strong></p>
+            <img src="{{ (document.img.webPath) | imagine_filter('my_thumb') }}" alt="{{document.img.alt}}"/>
             
-            <form action="{{ path('oph_familytree_delete_photo', {'id': person.id, 'idPicture': picture.id}) }}" method="post">
+            <form action="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': document.id}) }}" method="post">
             
             <p>
                <input type="submit" value="Confirmer la suppression" class="btn btn-danger" />

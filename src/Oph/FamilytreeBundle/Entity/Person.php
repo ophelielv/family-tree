@@ -16,20 +16,9 @@ use Oph\FamilytreeBundle\Entity\Image;
  */
 class Person
 {
-    /**
-     * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Photo", cascade={"persist"})
-     */
-    private $listPhotos;
-
-
-    private $uploadedFiles;
-    
     private $uploadedPictures;
-    /**
-	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Image",  cascade={"persist"})
-	 */
-	private $image;
-	
+    private $uploadedDocuments;
+
 	/**
 	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Img",  cascade={"persist", "remove"})
 	 */
@@ -38,8 +27,13 @@ class Person
 	/**
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Picture", cascade={"persist", "remove"})
      */
-    private $gallery; //array de Picture
-	
+    private $gallery; //array de Pictures
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Document", cascade={"persist", "remove"})
+     */
+    private $listOfDocuments; //array de Documents
+    
     /**
      * @var integer
      *
@@ -117,29 +111,34 @@ class Person
 
     public function __construct()
     {
-        $this->listPhotos = new ArrayCollection();
         $this->gallery = new ArrayCollection();
+        $this->listOfDocuments = new ArrayCollection();
     }
 
-    public function addPhoto(Photo $photo)
+
+/*************************************************************************************/
+/****************** ManyToMany Documents************************************************/
+    public function addDocument(Document $document)
     {
         // Ici, on utilise l'ArrayCollection vraiment comme un tableau
-        $this->listPhotos[] = $photo;
+        $this->listOfDocuments[] = $document;
         return $this;
     }
     
-    public function removePhoto(Photo $photo)
+    public function removeDocument(Document $document)
     {
     // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la photo en argument
-    $this->listPhotos->removeElement($photo);
-    }
-    
-    // Notez le pluriel, on récupère une liste de photos ici !
-    public function getlistPhotos()
-    {
-    return $this->listPhotos;
+        $this->listOfDocuments->removeElement($document);
     }
 
+    //on récupère une liste de photos ici !
+    public function getListOfDocuments()
+    {
+        return $this->listOfDocuments;
+    }
+/*************************************************************************************/
+
+/****************** ManyToMany Picture************************************************/
     public function addPicture(Picture $picture)
     {
         // Ici, on utilise l'ArrayCollection vraiment comme un tableau
@@ -152,20 +151,14 @@ class Person
     // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la photo en argument
         $this->gallery->removeElement($picture);
     }
-    
- /*   public function getPictureFromGallery($idPicture)
-    {
-    // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la photo en argument
-        $picture = $this->gallery.first();//get($idPicture); //array_search ( mixed $needle , array $haystack [, bool $strict = false ] )
-        return $picture;
-    }
-*/
+
     //on récupère une liste de photos ici !
     public function getGallery()
     {
         return $this->gallery;
     }
 
+/*************************************************************************************/
     /**
      * Get id
      *
@@ -361,29 +354,6 @@ class Person
     }
 
     /**
-     * Set image
-     *
-     * @param \Oph\FamilytreeBundle\Entity\Image $image
-     * @return Person
-     */
-    public function setImage(\Oph\FamilytreeBundle\Entity\Image $image = null)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return \Oph\FamilytreeBundle\Entity\Image 
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-    
-    /**
      * Set img
      *
      * @param \Oph\FamilytreeBundle\Entity\Img $img
@@ -407,8 +377,8 @@ class Person
     }
     
     /**
-     * Affichage d'une entité Film avec echo
-     * @return string Représentation du film
+     * 
+     * @return string Représentation de Person
      */
     public function __toString()
     {
@@ -440,29 +410,6 @@ class Person
     }
 
     /**
-     * Add listPhotos
-     *
-     * @param \Oph\FamilytreeBundle\Entity\Photo $listPhotos
-     * @return Person
-     */
-    public function addListPhoto(\Oph\FamilytreeBundle\Entity\Photo $listPhotos)
-    {
-        $this->listPhotos[] = $listPhotos;
-
-        return $this;
-    }
-
-    /**
-     * Remove listPhotos
-     *
-     * @param \Oph\FamilytreeBundle\Entity\Photo $listPhotos
-     */
-    public function removeListPhoto(\Oph\FamilytreeBundle\Entity\Photo $listPhotos)
-    {
-        $this->listPhotos->removeElement($listPhotos);
-    }
-
-    /**
      * Set gender
      *
      * @param string $gender
@@ -485,30 +432,6 @@ class Person
         return $this->gender;
     }
 
-    public function addUploadedFile(Photo $photo)
-    {
-        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
-        $this->uploadedFiles[] = $photo;
-        return $this;
-    }
-    
-    public function removeUploadedFile(Photo $photo)
-    {
-    // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la photo en argument
-    $this->uploadedFiles->removeElement($photo);
-    }
-    
-    public function getUploadedFiles()
-    {
-        return $this->uploadedFiles;
-    }
-    
-    public function setFile(UploadedFile $file = null)
-    {
-        $this->uploadedFiles = $files;
-    }
-    
-    //////////////////////////////////
     public function getUploadedPictures()
     {
         return $this->uploadedPictures;
@@ -517,27 +440,8 @@ class Person
     public function setUploadedPictures(array $files = null)
     {
         $this->uploadedPictures = $files;
-    }////
-
-     
-     /**
-     * @ORM\PreFlush()
-     */
-    public function uploadPhotos()
-    {
-        if (null === $this->uploadedFiles) 
-        {
-            return;
-        }
-        foreach($this->uploadedFiles as $uploadedFile)
-        {
-            $uploadedFile->getImage()->upload(); 
-            $this->addPhoto($uploadedFile);
-    
-            unset($uploadedFile);
-        }
     }
-    
+
      /**
      * @ORM\PreFlush()
      */
@@ -555,4 +459,33 @@ class Person
             unset($uploadedPictures);
         }
     }
+    
+    public function getUploadedDocuments()
+    {
+        return $this->uploadedDocuments;
+    }
+    
+    public function setUploadedDocuments(array $files = null)
+    {
+        $this->uploadedDocuments = $files;
+    }
+    
+     /**
+     * @ORM\PreFlush()
+     */
+    public function uploadDocuments()
+    {
+        if (null === $this->uploadedDocuments) 
+        {
+            return;
+        }
+        foreach($this->uploadedDocuments as $uD)
+        {
+
+            $this->addDocument($uD);
+    
+            unset($uploadedDocuments);
+        }
+    }
+
 }
