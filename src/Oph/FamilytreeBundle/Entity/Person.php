@@ -134,6 +134,23 @@ class Person
         return $this->mother;
     }
     
+
+    public function getMotherId()
+    {
+        if($this->mother==null){
+            return -1;
+        }
+        return $this->mother->getId();
+    }
+    
+    public function getFatherId()
+    {
+        if($this->father==null){
+            return -1;
+        }
+        return $this->father->getId();
+    }
+    
     /*******childrenOfMother*********/
         
     /**

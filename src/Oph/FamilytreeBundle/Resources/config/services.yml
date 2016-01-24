@@ -7,3 +7,5 @@ services:
 services:
     oph_familytree.personservice:
         class: Oph\FamilytreeBundle\Service\PersonService
+        calls:
+         - [setEntityManager, ["@doctrine.orm.entity_manager"]]

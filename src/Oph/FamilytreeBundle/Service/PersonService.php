@@ -4,36 +4,53 @@
 namespace Oph\FamilytreeBundle\Service;
 
 use Oph\FamilytreeBundle\Model\PersonModel;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class PersonService
 {
-    public function getPersonModelById( $id)
+    
+    protected $em;
+    
+    public function setEntityManager(ObjectManager $em)
     {
-     /*   $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('OphFamilytreeBundle:Person');
+        $this->em = $em;
+    }
+    /*
+    public function someOtherFunction()
+    {
+        $this->em->getRepository('...')
+    }*/
+    
+    public function getPersonModelById($id)
+    {
+    //    $em = $this->getDoctrine()->getManager();
+        $repository = $this->em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
         if (null === $person) {
-            throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
+            return null;
         }
-        */
+        
         $pM = new PersonModel();
+        $pM->setId($person->getId());
+        $pM->setName($person->getCompleteName());
         
         
-        /*
-        if(null != $son->getMother()){
-            $mother = $son->getMother();
-            $motherModel = new PersonModel($mother->getId(),$mother->getCompleteName());
-            $this->getFamilyTreeBySon($mother);
-            $pM->addParent($motherModel);
+        $motherId = $person->getMotherId();
+        $fatherId = $person->getFatherId();
+
+        if(null != $motherId && $motherId > 0){
+            $motherModel = $this->getPersonModelById($motherId);
+            if($motherModel != null){
+                $pM->addParent($motherModel);
+            }
         }
         
-        if(null != $son->getFather()){
-            $father = $son->getFather();
-            $fatherModel = new PersonModel($father->getId(),$father->getCompleteName());
-            $this->getFamilyTreeBySon($father);
-            $pM->addParent($fatherModel);
+        if(null != $fatherId && $fatherId > 0){
+            $fatherModel = $this->getPersonModelById($fatherId);
+             if($fatherModel != null){
+                $pM->addParent($fatherModel);
+            }
         }
-        $this->personModels[] =  $pM*/
         return $pM;
     }
 
