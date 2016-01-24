@@ -14,4 +14,11 @@
   {% block ophfamilytree_body %}
   {% endblock %}
 
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+   {% block familytree_js %}
+  {% endblock %}
 {% endblock %}

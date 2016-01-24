@@ -32,22 +32,6 @@
       </div>
       
       <div class="form-group">
-          {{ form_label(form.anitasFamily, "Appartient à la famille d'Anita", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-          {{ form_errors(form.anitasFamily) }}
-          <div class="col-sm-1">
-              {{ form_widget(form.anitasFamily, {'attr': {'class': 'col-sm-3'} }) }}
-          </div>
-      </div>
-  
-      <div class="form-group">
-          {{ form_label(form.georgesFamily, "Appartient à la famille de Georges", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-          {{ form_errors(form.georgesFamily) }}
-          <div class="col-sm-1">
-              {{ form_widget(form.georgesFamily, {'attr': {'class': 'col-sm-3'} }) }}
-          </div>
-      </div>
-      
-      <div class="form-group">
           {{ form_label(form.gender, "Genre", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
           {{ form_errors(form.gender) }}
           <div class="col-sm-3">
@@ -82,6 +66,26 @@
           {{ form_widget(form.placeOfDeath, {'attr': {'class': 'form-control'} }) }}
         </div>
       </div>  
+      
+      <div class="container">
+      <div class="form-group">
+        {{ form_label(form.tempMother, "Mère :", {'label_attr': {'class': 'col-sm-3 control-label'} }) }}
+        {{ form_errors(form.tempMother) }}
+        <div class="col-sm-8 ">
+          {{ form_widget(form.tempMother) }}
+        </div>
+      </div> 
+      
+      <div class="form-group">
+        {{ form_label(form.tempFather, "Père :", {'label_attr': {'class': 'col-sm-3 control-label'} }) }}
+        {{ form_errors(form.tempFather) }}
+        <div class="col-sm-8 ">
+          {{ form_widget(form.tempFather) }}
+        </div>
+        
+      </div> 
+
+    
     </div><!--end well-->    
     
     <div class="well">
@@ -94,6 +98,8 @@
           
         </div>
     </div><!--end well-->
+    
+   
 
     <div class="container">   
       <div class=" form-group">

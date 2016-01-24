@@ -9,10 +9,33 @@
 {% block ophfamilytree_body %}
 
     <div class="container">
-        <h2 class="text-center">Galerie</h2>
-     
-        {% if person.gallery is not empty %}
         
+        <div class=" resume">
+            <h2 class="text-center">Résumé</h2>
+            <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
+            Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
+
+            
+            <p>
+                {% if person.gender == 'F' %}Fille{% else %}Fils{%endif %} de 
+                {% if person.mother is null %}
+                    <strong>?</strong>
+                {% else %}
+                    <a href="{{ path('oph_familytree_view', {'id':person.mother.id})}}">{{person.mother.firstName}} {{person.mother.name}}</a>
+                {% endif %}
+                et
+                {% if person.father is null %}
+                    <strong>?</strong>
+                {% else %}
+                    <a href="{{ path('oph_familytree_view', {'id':person.father.id})}}">{{person.father.firstName}} {{person.father.name}}</a>
+                {% endif %}
+            </p>
+            
+                
+            </div><!--end container-->
+
+        {% if person.gallery is not empty %}
+            <h2 class="text-center">Galerie</h2>
             <div id="galleryCarousel" class="carousel slide" data-ride="carousel">
             
                 <!-- Indicators -->
@@ -24,7 +47,6 @@
                                 <li data-target="#galleryCarousel" data-slide-to="{{i}}"></li>
                         {%endfor%}
                     {% endif %}
-                    
                 </ol>
                 
                 <!-- Wrapper for slides -->
@@ -59,13 +81,6 @@
          <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-primary" role="button">Editer la galerie</a>
     </div><!--end container galerie-->
     
-    <div class="container resume">
-        <h2 class="text-center">Résumé</h2>
-        <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
-        Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
-    </div><!--end container-->
-    
-    
     <div class="container">
         <h2 class="text-center">Documents</h2>
         
@@ -98,9 +113,9 @@
     
     <div class="text-center container">
         <p> 
-            <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button">Editer la fiche</a>
-            <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button">Supprimer</a>
-            <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à l'accueil</a>
+            <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
+            <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
+            <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a>
         </p>
     </div>
 

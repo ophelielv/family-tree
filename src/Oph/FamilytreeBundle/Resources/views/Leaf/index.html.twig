@@ -18,14 +18,19 @@
             <h3>Tout marche ! 
                 <small>sauf ...<br>
                 comment afficher date photos // slider<br>
-                + rajouter suppr portrait, c plus propre<br>
                 + validation données<br>
                 + fosuserbundle <br>
-                + booleen choix famille <br>
+                + taille ad andre salleyrettes <br>
+                + recherche (autocompletion)<br>
+                + openstreetmap / google map<br>
+                + service mail ──────────────────────<br>
+                + appel ajax (action return tableau persons json)<br>
+                + http://w3bits.com/labs/css-masonry/<br>
                 + ah et bug quand on rentre date vide (mais current date) ---------> voir constructeur!!?<br>
                 + et aussiiii manytomany documents/personnes : afficher les personnes liés à un doc !<br>
                 + tin il manque tjs un truc : service calculAge!!<br>
-                ...mais avant :<strong> refaire index avec arbre en js !!</strong></small></h3>
+                ...mais avant :<strong> refaire index avec arbre en js !!</strong></small><br>
+                http://www.symfony2cheatsheet.com/</h3>
         </div><!--end page-header-->
     </div>
     
@@ -55,6 +60,43 @@
             {% endfor %}
         </div><!--end row-fluid-->
     </div><!--end container-->
+    
+    <!-------------------------------------------------->
+    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
+     In this case we also add a background color so we can see that area. -->
+    <div class="container">
 
+         <div id="myDiagram" style="border: solid 1px black; width:100%; height:600px"></div>
+    </div>
+
+
+{% endblock %} 
+
+{% block familytree_js %}
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    {% javascripts '@OphFamilytreeBundle/Resources/public/js/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+        <script type="text/javascript">
+        
+        {#    $( document ).ready(function() {#}
+        {#        console.log('0');#}
+        {#        $.ajax({#}
+        {#            url: '{{ path('oph_familytree_dtrois') }}',#}
+        {#            success: function(res){#}
+        {#            console.log(res);#}
+        {#        },#}
+        {#            error: function(){#}
+        {#            alert('failure');#}
+        {#        }#}
+        {#        });#}
+        {#    });#}
+        {#    console.log('10');#}
+        
+        setupTree('{  { path('oph_familytree_tree') }}');
+     
+        </script>
     
 {% endblock %}

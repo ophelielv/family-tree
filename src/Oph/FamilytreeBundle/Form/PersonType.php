@@ -15,19 +15,17 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('anitasFamily',   'checkbox', array('label'=>'De la famille d\'Anita ?','required' => false) )
-                    ->add('georgesFamily',  'checkbox', array('label'=>'... ou de la famille de Georges ?','required' => false) )
-                    ->add('description',    'text',     array('label'=>'Lien de parenté / Description') )
-                    ->add('firstName',      'text',     array('label'=>'Prénom'))
-                    ->add('name',           'text',     array('label'=>'Nom'))
-                    ->add('gender', 'choice', array('label'=>'Genre','choices'  => array('M' => 'Homme', 'F' => 'Femme')) )
-                    ->add('dateOfBirth',    'birthday', array('label'=>'Date de naissance', 'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
-                    ->add('placeOfBirth',   'text',     array('label'=>'à', 'required' => false))
-                    ->add('dateOfDeath',    'birthday', array('label'=>'Date de décès', 'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
-                    ->add('placeOfDeath',   'text',     array('label'=>'à', 'required' => false))
-                 //   ->add('image',   new ImageType(),   array('required' => false))
-                    ->add('img',   new ImgType(),   array('label' => 'Choisir un fichier','required' => false))
-                    ->add('Enregistrer',    'submit');
+            ->add('firstName',      'text',     array('label'=>'Prénom'))
+            ->add('name',           'text',     array('label'=>'Nom'))
+            ->add('gender',         'choice',   array('label'=>'Genre','choices'  => array('M' => 'Homme', 'F' => 'Femme')) )
+            ->add('dateOfBirth',    'birthday', array('label'=>'Date de naissance', 'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
+            ->add('placeOfBirth',   'text',     array('label'=>'à', 'required' => false))
+            ->add('dateOfDeath',    'birthday', array('label'=>'Date de décès', 'years' => range(1800, date('Y')), 'empty_value' => '--','empty_data'  => null, 'required' => false))
+            ->add('placeOfDeath',   'text',     array('label'=>'à', 'required' => false))
+            ->add('tempMother',     'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
+            ->add('tempFather',     'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
+            ->add('img',   new ImgType(),   array('label' => 'Choisir un fichier','required' => false))
+            ->add('Enregistrer',    'submit');
     }
     
     /**

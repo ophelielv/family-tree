@@ -8,16 +8,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oph\FamilytreeBundle\Entity\Image;
 
 
+
 /**
  * Person
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Oph\FamilytreeBundle\Entity\PersonRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Person
 {
     private $uploadedPictures;
     private $uploadedDocuments;
+    private $tempMother;
+    private $tempFather;
 
 	/**
 	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Img",  cascade={"persist", "remove"})
@@ -27,12 +31,12 @@ class Person
 	/**
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Picture", cascade={"persist", "remove"})
      */
-    private $gallery; //array de Pictures
+    private $gallery; //array de Picture
     
     /**
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Document", cascade={"persist", "remove"})
      */
-    private $listOfDocuments; //array de Documents
+    private $listOfDocuments; //array de Document
     
     /**
      * @var integer
@@ -43,17 +47,6 @@ class Person
      */
     private $id;
 
-    /**
-     *@ORM\Column(name="anitasFamily", type="boolean", nullable=true, options={"default":false})
-     */
-    private $anitasFamily;
-    
-    
-    /**
-     *@ORM\Column(name="georgesFamily", type="boolean", nullable=true, options={"default":false})
-     */
-    private $georgesFamily;
-    
      /**
       * @ORM\Column(name="gender", type="string", length=1)
       * @Assert\Choice(choices = {"M", "F"}, message = "gender")
@@ -102,20 +95,186 @@ class Person
      */
     private $placeOfDeath;
     
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string",nullable=true, length=255, nullable=true)
+    private $completeName;
+    /******************************************************************************************/
+    /************************Parent***********************************************/
+    /*******************Mother****************************************************/
+     /**
+     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="mother")
      */
-    private $description;
+    private $childrenOfMother;
 
-    public function __construct()
+    /**
+     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfMother")
+     * @ORM\JoinColumn(name="mother_id", referencedColumnName="id", nullable=true)
+     */
+    private $mother;
+
+    /******mother**********/
+    /**
+     * Set mother
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Person $mother
+     * @return Person
+     */
+    public function setMother(\Oph\FamilytreeBundle\Entity\Person $mother = null)
     {
-        $this->gallery = new ArrayCollection();
-        $this->listOfDocuments = new ArrayCollection();
+        $this->mother = $mother;
+
+        return $this;
+    }
+
+    /**
+     * Get mother
+     *
+     * @return \Oph\FamilytreeBundle\Entity\Person 
+     */
+    public function getMother()
+    {
+        return $this->mother;
+    }
+    
+    /*******childrenOfMother*********/
+        
+    /**
+     * Add childrenOfMother
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Person $childrenOfMother
+     * @return Person
+     */
+    public function addChildrenOfMother(\Oph\FamilytreeBundle\Entity\Person $childrenOfMother)
+    {
+        $this->childrenOfMother[] = $childrenOfMother;
+
+        return $this;
+    }
+
+    /**
+     * Get childrenOfMother
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildrenOfMother()
+    {
+        return $this->childrenOfMother;
+    }
+
+     public function addChildOfMother(Person $child)
+    {
+        $this->childrenOfMother[] = $child;
+        return $this;
+    }
+    
+    public function removeChildrenOfMother(Person $child)
+    {
+        $this->childrenOfMother->removeElement($child);
     }
 
 
+/*******************Father****************************************************/
+     /**
+     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="father")
+     */
+    private $childrenOfFather;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfFather")
+     * @ORM\JoinColumn(name="father_id", referencedColumnName="id", nullable=true)
+     */
+    private $father;
+
+    /******father**********/
+    /**
+     * Set father
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Person $father
+     * @return Person
+     */
+    public function setFather(\Oph\FamilytreeBundle\Entity\Person $father = null)
+    {
+        $this->father = $father;
+
+        return $this;
+    }
+
+    /**
+     * Get father
+     *
+     * @return \Oph\FamilytreeBundle\Entity\Person 
+     */
+    public function getFather()
+    {
+        return $this->father;
+    }
+    
+    /*******childrenOfFather*********/
+        
+    /**
+     * Add childrenOfFather
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Person $childrenOfFather
+     * @return Person
+     */
+    public function addChildrenOfFather(\Oph\FamilytreeBundle\Entity\Person $childrenOfFather)
+    {
+        $this->childrenOfFather[] = $childrenOfFather;
+
+        return $this;
+    }
+
+    /**
+     * Get childrenOfFather
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildrenOfFather()
+    {
+        return $this->childrenOfFather;
+    }
+
+     public function addChildOfFather(Person $child)
+    {
+        $this->childrenOfFather[] = $child;
+        return $this;
+    }
+    
+    public function removeChildrenOfFather(Person $child)
+    {
+        $this->childrenOfFather->removeElement($child);
+    }
+
+    
+    /***********************************/
+    public function __construct() {
+        $this->childrenOfMother = new ArrayCollection();
+        $this->childrenOfFather = new ArrayCollection();
+
+        $this->gallery = new ArrayCollection();
+        $this->listOfDocuments = new ArrayCollection();
+
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function uploadMother()
+    {
+        if (null === $this->tempMother) {
+            return;
+        }
+        $this->setMother($this->tempMother);
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function uploadFather()
+    {
+        if (null === $this->tempFather) {
+            return;
+        }
+        $this->setFather($this->tempFather);
+    }
 /*************************************************************************************/
 /****************** ManyToMany Documents************************************************/
     public function addDocument(Document $document)
@@ -308,52 +467,6 @@ class Person
 
     
     /**
-     * Set anitasFamily
-     *
-     * @param boolean $anitasFamily
-     * @return Person
-     */
-    public function setAnitasFamily($anitasFamily)
-    {
-        $this->anitasFamily = $anitasFamily;
-
-        return $this;
-    }
-
-    /**
-     * Get anitasFamily
-     *
-     * @return boolean 
-     */
-    public function getAnitasFamily()
-    {
-        return $this->anitasFamily;
-    }
-
-    /**
-     * Set georgesFamily
-     *
-     * @param boolean $georgesFamily
-     * @return Person
-     */
-    public function setGeorgesFamily($georgesFamily)
-    {
-        $this->georgesFamily = $georgesFamily;
-
-        return $this;
-    }
-
-    /**
-     * Get georgesFamily
-     *
-     * @return boolean 
-     */
-    public function getGeorgesFamily()
-    {
-        return $this->georgesFamily;
-    }
-
-    /**
      * Set img
      *
      * @param \Oph\FamilytreeBundle\Entity\Img $img
@@ -386,29 +499,7 @@ class Person
         return $completeName;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Person
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
+    
     /**
      * Set gender
      *
@@ -442,7 +533,7 @@ class Person
         $this->uploadedPictures = $files;
     }
 
-     /**
+   /**
      * @ORM\PreFlush()
      */
     public function uploadPictures()
@@ -460,6 +551,9 @@ class Person
         }
     }
     
+   /**
+     * @ORM\PreFlush()
+     */
     public function getUploadedDocuments()
     {
         return $this->uploadedDocuments;
@@ -470,7 +564,7 @@ class Person
         $this->uploadedDocuments = $files;
     }
     
-     /**
+    /**
      * @ORM\PreFlush()
      */
     public function uploadDocuments()
@@ -486,6 +580,80 @@ class Person
     
             unset($uploadedDocuments);
         }
+    }
+
+
+    /**
+     * Add gallery
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Picture $gallery
+     * @return Person
+     */
+    public function addGallery(\Oph\FamilytreeBundle\Entity\Picture $gallery)
+    {
+        $this->gallery[] = $gallery;
+
+        return $this;
+    }
+
+    /**
+     * Remove gallery
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Picture $gallery
+     */
+    public function removeGallery(\Oph\FamilytreeBundle\Entity\Picture $gallery)
+    {
+        $this->gallery->removeElement($gallery);
+    }
+
+    /**
+     * Add listOfDocuments
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Document $listOfDocuments
+     * @return Person
+     */
+    public function addListOfDocument(\Oph\FamilytreeBundle\Entity\Document $listOfDocuments)
+    {
+        $this->listOfDocuments[] = $listOfDocuments;
+
+        return $this;
+    }
+
+    /**
+     * Remove listOfDocuments
+     *
+     * @param \Oph\FamilytreeBundle\Entity\Document $listOfDocuments
+     */
+    public function removeListOfDocument(\Oph\FamilytreeBundle\Entity\Document $listOfDocuments)
+    {
+        $this->listOfDocuments->removeElement($listOfDocuments);
+    }
+
+    public function getcompleteName()
+    {
+        $this->completeName = $this->firstName.' '.$this->name;
+        return $this->completeName;
+    }
+
+    public function getTempMother()
+    {
+        return $this->tempMother;
+    }
+    
+    public function setTempMother(Person $par)
+    {
+        $this->tempMother = $par;
+    }
+    
+        public function getTempFather()
+    {
+        return $this->tempFather;
+    }
+    
+    public function setTempFather(Person $par)
+    {
+        $this->tempFather = $par;
+       // return $this->linkedParent;
     }
 
 }

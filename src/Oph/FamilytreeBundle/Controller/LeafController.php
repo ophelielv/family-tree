@@ -14,12 +14,13 @@ use Oph\FamilytreeBundle\Form\DocumentType;
 use Oph\FamilytreeBundle\Form\DocumentEditOneType;
 use Oph\FamilytreeBundle\Form\PersonAddGalleryType;
 use Oph\FamilytreeBundle\Form\PersonAddDocumentsType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Oph\FamilytreeBundle\Model\PersonModel;
 
 class LeafController extends Controller
 {
-    public function addAction(Request $request){
-        //requête en post, création et gestion du formulaire, puis redirige vers page de visualisation de l’annonce. add.html.twig
-        
+    public function addAction(Request $request)
+    {
         $person = new Person();
         
         // On crée le FormBuilder grâce au service form factory
@@ -30,13 +31,12 @@ class LeafController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) 
         {
-          //****il parait que ça se fait dans l'entité avec doctrine maintenant  $person->getImage()->upload();
             $em = $this->getDoctrine()->getManager();
+            
             $em->persist($person);
             $em->flush();
             
             $request->getSession()->getFlashBag()->add('notice', 'Personne enregistrée.');
-            // On redirige vers la page de visualisation de l'annonce nouvellement créée
             return $this->redirect($this->generateUrl('oph_familytree_view', array('id' => $person->getId())));
         }
 
@@ -77,7 +77,6 @@ class LeafController extends Controller
           'form'   => $form->createView() ));
     }
     
-//////////////////////
 public function deleteDocumentAction($id, $idDocument, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -89,7 +88,6 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
             throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
         }
         
-        //$picture = $person->getPictureFromGallery($idPicture);//$repository->find($idPicture);
         $repositoryPicture = $em->getRepository('OphFamilytreeBundle:Document');
         $document = $repositoryPicture->findOneById($idDocument);
         if (null === $document) 
@@ -118,7 +116,6 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
                                         'form'   => $form->createView() 
                                 ) );
     }
-/////////////////////////
 
     public function deletePhotoAction($id, $idPicture, Request $request)
     {
@@ -130,8 +127,6 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         {
             throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
         }
-        
-        //$picture = $person->getPictureFromGallery($idPicture);//$repository->find($idPicture);
         $repositoryPicture = $em->getRepository('OphFamilytreeBundle:Picture');
         $picture = $repositoryPicture->findOneById($idPicture);
         if (null === $picture) 
@@ -178,6 +173,8 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         if ($form->isValid()) 
         {
             $em = $this->getDoctrine()->getManager();
+         //   $person->uploadFather();//setFather($person->getTempFather());
+         //  $person->uploadMother();//setMother($person->getTempMother());
             $em->persist($person);
             $em->flush();
             
@@ -209,7 +206,7 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         $form->handleRequest($request);
         if ($form->isValid()) 
         {
-            $person->uploadDocuments();
+           // $person->uploadDocuments();
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
             $em->flush();
@@ -223,7 +220,7 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
           'form' => $form->createView(),
         ));
     }
-    //////////////////////////////////////////////////////////////////////////////
+    
     public function editOneDocumentAction($id, $idDocument, Request $request){
         
         $em = $this->getDoctrine()->getManager();
@@ -261,7 +258,6 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
           'form' => $form->createView(),
         ));
     }
-    /////////////////////////////////////////////////////////////////////////////
     
     public function editPhotosAction($id, Request $request){
         
@@ -277,7 +273,7 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         $form->handleRequest($request);
         if ($form->isValid()) 
         {
-            $person->uploadPictures();
+        //    $person->uploadPictures();
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
             $em->flush();
@@ -292,54 +288,47 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         ));
            
     }
-    
-    //////////////////////////////////////////////////////////////////////
-    
+   
     public function indexAction()
     {
-        // L'index affiche:
-        // - une photo de Anita et Georges
-        // - texte pour choisir la famille de Anita ou Georges
-        // - portfolio + affichage en jquery
-        // - après je ne sais plus
-     /*   $listPersons = VOIR REPOSITORY*/
         $em = $this->getDoctrine()->getManager();
         $persons = $em->getRepository('OphFamilytreeBundle:Person')->findAll();
         return $this->render('OphFamilytreeBundle:Leaf:index.html.twig', array('persons' => $persons,   ));
-       // return $this->render('OphFamilytreeBundle:Leaf:index.html.twig', array(/*'listPerons' => listPersons;*/));
     }
     
     public function viewAction($id)
     {
-        // La vue affiche une personne
-        // - header : photo + firstName + name 
-        // - résumé :   firstName, name 
-        //              dateOfBirth, placeOfBirth 
-        //              dateOfDeath, placeOfDeath et deadAtAge 
-        
-        // À faire ENSUITE 
-        // - Mariage (personne, date, lieu, divorces, enfants)
-        // - Photos (array de photos (url, alt, légende, date}
-        // - DOCUMENTS (array de docs (url, alt, date, légende)
-        
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
         if (null === $person) {
             throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
         }
-       /* 
-        //récup portrait
-        $portrait = $person->getId();
-        //récup liste docs
-        
-        $listDocuments = $em->getRepository('OphFamilytreeBundle:Document')->findBy(array('person'=>$person));
-        $listPhotos = $em->getRepository('OphFamilytreeBundle:Photo')->findBy(array('person'=>$person));
-*/
         return $this->render('OphFamilytreeBundle:Leaf:view.html.twig', 
-                       array(   'person' => $person,/*
-                                'portrait' => $portrait,
-                                'listDocuments' => $listDocuments,
-                                'listPhotos' => $listPhotos*/));
+                       array(   'person' => $person,));
     }
+    
+    
+   public function treeAction()
+    {/*
+        $em = $this->getDoctrine()->getManager();
+        $persons = $em->getRepository('OphFamilytreeBundle:Person')->findAll();
+        if (!$persons) {
+            throw $this->createNotFoundException('Unable to find requested data id.');
+        }*/
+      /*  $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('OphFamilytreeBundle:Person');
+        $person = $repository->find($id);
+        if (null === $person) {
+            throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
+        }*/
+       // $personModels;
+       
+        $personService = $this->container->get('oph_familytree.personservice');
+        $personModel = $personService->getPersonModelById(1);    
+        
+        return new JsonResponse($personModel);
+    }
+     
+    
 }

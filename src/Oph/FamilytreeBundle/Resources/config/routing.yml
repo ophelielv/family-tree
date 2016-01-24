@@ -2,6 +2,10 @@ oph_familytree_homepage:
     path:     /
     defaults: { _controller: OphFamilytreeBundle:Leaf:index }
     
+oph_familytree_tree:
+    path:     /tree
+    defaults: { _controller: OphFamilytreeBundle:Leaf:tree }
+    
 oph_familytree_add:
     path:     /add/
     defaults: { _controller: OphFamilytreeBundle:Leaf:add }

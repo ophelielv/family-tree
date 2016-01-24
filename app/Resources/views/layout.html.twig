@@ -3,16 +3,16 @@
 <!DOCTYPE html>
 <html lang="en">
      <head>
-        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>{% block title %}Généal{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Publier sa généalogie pas comme une truffe">
         <meta name="author" content="Ophel'">
          <!-- Le styles -->
             {% block stylesheets %}
-            {# On charge le CSS de bootstrap depuis le site directement #}
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-          {% endblock %}
+                {# On charge le CSS de bootstrap depuis le site directement #}
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            {% endblock %}
     </head>
 
     <body>
@@ -50,14 +50,19 @@
             </div>
             <hr>
             
-            <footer>
-                <p>Arbuste généalogique by Ophel' © {{ 'now'|date('Y') }}.</p>
-            </footer>
+          
+            
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
             
             {% block javascripts %}
-                <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-              {% endblock %}
+                
+             {% endblock %}
+             
+             
+               <footer>
+                <p>Arbuste généalogique by Ophel' © {{ 'now'|date('Y') }}.</p>
+            </footer>
            </div><!--end content-->
         </div><!--end container-fluid-->  
                 
