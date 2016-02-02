@@ -9,7 +9,7 @@
 {% block ophfamilytree_body %}
     <div class="container">
         <div class="page-header">
-            <h1>Famille de Anita & Georges <small>ça avance ça avance</small></h1>
+            <h1>Arbre généalogique <small>The pay's not great, but the work is hard</small></h1>
         </div><!--end page-header-->
     </div>
     
@@ -34,6 +34,13 @@
         </div><!--end page-header-->
     </div>
     
+    <!-------------------------------------------------->
+    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
+     In this case we also add a background color so we can see that area. -->
+    <div class="container" >
+         <div id="myDiagram" style=" width:100%; height:600px"></div>
+    </div>
+     *********sitePath******{{ path('oph_familytree_homepage') }}
     <div class="container">
         <div class="row-fluid">
             {% for person in persons %}
@@ -61,15 +68,6 @@
         </div><!--end row-fluid-->
     </div><!--end container-->
     
-    <!-------------------------------------------------->
-    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
-     In this case we also add a background color so we can see that area. -->
-    <div class="container">
-
-         <div id="myDiagram" style="border: solid 1px black; width:100%; height:600px"></div>
-    </div>
-
-
 {% endblock %} 
 
 {% block familytree_js %}
@@ -95,7 +93,7 @@
         {#    });#}
         {#    console.log('10');#}
         
-        setupTree('{  { path('oph_familytree_tree') }}');
+        setupTree('{{ path('oph_familytree_tree') }}', '{{ path('oph_familytree_homepage') }}');
      
         </script>
     

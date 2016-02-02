@@ -13,8 +13,24 @@ class PersonModel
 {
     public $id;
     public $name;
+    public $urlImage;
+    public $altImage;
     public $_parents;
+
+    public function setUrlImage($urlImage)
+    {
+        $this->urlImage = $urlImage;
+
+        return $this;
+    }
     
+    public function setAltImage($altImage)
+    {
+        $this->altImage = $altImage;
+
+        return $this;
+    }
+     
     public function setName($name)
     {
         $this->name = $name;
@@ -36,7 +52,7 @@ class PersonModel
         return $this;
     }
     
-    public function getFamilyTreeBySon(Person $son)
+    /*public function getFamilyTreeBySon(Person $son)
     {
         $pM = new PersonModel($son->getId(), $son->getCompleteName());
         
@@ -55,13 +71,7 @@ class PersonModel
         }
         $this->personModels[] =  $pM;
         return $this->personModels;
-    }
-  /*  
-    public function __construct($id, $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
-      //  $this->_parents = null;
     }*/
+
 
 }

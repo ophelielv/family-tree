@@ -310,22 +310,9 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
     
     
    public function treeAction()
-    {/*
-        $em = $this->getDoctrine()->getManager();
-        $persons = $em->getRepository('OphFamilytreeBundle:Person')->findAll();
-        if (!$persons) {
-            throw $this->createNotFoundException('Unable to find requested data id.');
-        }*/
-      /*  $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('OphFamilytreeBundle:Person');
-        $person = $repository->find($id);
-        if (null === $person) {
-            throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
-        }*/
-       // $personModels;
-       
+    {
         $personService = $this->container->get('oph_familytree.personservice');
-        $personModel = $personService->getPersonModelById(1);    
+        $personModel = $personService->getPersonModelById(4/*1*/);    
         
         return new JsonResponse($personModel);
     }

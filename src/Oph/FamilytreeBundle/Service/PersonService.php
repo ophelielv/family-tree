@@ -5,6 +5,7 @@ namespace Oph\FamilytreeBundle\Service;
 
 use Oph\FamilytreeBundle\Model\PersonModel;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oph\FamilytreeBundle\Entity\Img;
 
 class PersonService
 {
@@ -15,15 +16,10 @@ class PersonService
     {
         $this->em = $em;
     }
-    /*
-    public function someOtherFunction()
-    {
-        $this->em->getRepository('...')
-    }*/
+
     
     public function getPersonModelById($id)
     {
-    //    $em = $this->getDoctrine()->getManager();
         $repository = $this->em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
         if (null === $person) {
@@ -33,7 +29,15 @@ class PersonService
         $pM = new PersonModel();
         $pM->setId($person->getId());
         $pM->setName($person->getCompleteName());
-        
+        $img=$person->getImg();
+        if($img!=null){
+            $pM->setUrlImage($img->getWebPath());
+            $pM->setAltImage($img->getAlt());
+        } else {
+            $pM->setUrlImage('media/cache/my_thumb/bundles/ophfamilytree/images/pas-d-avatar.png');
+            $pM->setAltImage($person->getCompleteName());
+        }
+     //   $pM->setUrlFiche($url = $this->generateUrl('oc_platform_home'););
         
         $motherId = $person->getMotherId();
         $fatherId = $person->getFatherId();

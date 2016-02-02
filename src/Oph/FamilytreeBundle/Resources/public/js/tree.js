@@ -1,14 +1,12 @@
 var boxWidth = 150,
-    boxHeight = 40,
+    boxHeight = 140,
     nodeWidth = 100,
     nodeHeight = 200,
-    
     // duration of transitions in ms
     duration = 750, 
-    
     // d3 multiplies the node size by this value 
     // to calculate the distance between nodes
-    separation = .5;
+    separation = 1.8;//.5
     
 
 
@@ -19,20 +17,20 @@ var boxWidth = 150,
  * Normally you would extract the entire Tree class defintion into a
  * separate file and include it before this script tag.
  */
-function setupTree(apiPath) {
-
+function setupTree(apiPath, sitePath) {
   // Setup zoom and pan
   var zoom = d3.behavior.zoom()
     .scaleExtent([.1,1])
     .on('zoom', function(){
-      svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+      svg.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");/*déplacement*/
+      svg.attr("transform");
     })
     // Offset so that first pan and zoom does not jump back to the origin
     .translate([400, 200]);
-  
-  var svg = d3.select("body").append("svg")
-    .attr('width', 1000)
-    .attr('height', 500)
+    
+  var svg = d3.select("#myDiagram").append("svg")
+    .attr('width', '100%')
+    .attr('height', '100%')
     .call(zoom)
     .append('g')
     
@@ -49,7 +47,7 @@ function setupTree(apiPath) {
     if(person.collapsed){
       return;
     } else {
-      return person.parents;
+      return person._parents;
     }
   });
     
@@ -77,21 +75,26 @@ function setupTree(apiPath) {
     var descendantRoot = rootProxy(json);
     
     // Start with only the first few generations of ancestors showing
-    if (ancestorRoot.parents.Length > 0){
-      ancestorRoot.parents.forEach(function(parents){
-        parents.parents.forEach(collapse);
+    if (ancestorRoot._parents != undefined && ancestorRoot._parents.length > 0){
+      ancestorRoot._parents.forEach(function(_parents){
+        if ( _parents._parents != undefined){
+        _parents._parents.forEach(collapse);
+          
+        }
       });
     }
     // Start with only one generation of descendants showing
-    descendantRoot._children.forEach(collapse);
+    if(descendantRoot._children != undefined){
+      descendantRoot._children.forEach(collapse);
+    }
     
     // Set the root nodes
     ancestorTree.data(ancestorRoot);
     descendantsTree.data(descendantRoot);
     
     // Draw the tree
-    ancestorTree.draw(ancestorRoot);
-    descendantsTree.draw(descendantRoot);
+    ancestorTree.draw(ancestorRoot, sitePath);
+    descendantsTree.draw(descendantRoot, sitePath);
         
   });
 
@@ -101,10 +104,12 @@ function rootProxy(root){
   return {
     name: root.name,
     id: root.id,
+    urlImage: root.urlImage,
+    altImage: root.altImage,
     x0: 0,
     y0: 0,
     _children: root._children,
-    parents: root.parents,
+    _parents: root._parents,
     collapsed: false
   };
 }
@@ -157,12 +162,12 @@ Tree.prototype.data = function(data){
 /**
  * Draw/redraw the tree
  */
-Tree.prototype.draw = function(source){
+Tree.prototype.draw = function(source, sitePath){
   if(this.root){
     var nodes = this.tree.nodes(this.root),
         links = this.tree.links(nodes);    
     this.drawLinks(links, source);
-    this.drawNodes(nodes, source);
+    this.drawNodes(nodes, source, sitePath);
   } else {
     throw new Error('Missing root');
   }
@@ -220,7 +225,7 @@ Tree.prototype.drawLinks = function(links, source){
 /**
  * Draw/redraw the person boxes.
  */
-Tree.prototype.drawNodes = function(nodes, source){
+Tree.prototype.drawNodes = function(nodes, source, sitePath){
   
   var self = this;
   
@@ -233,7 +238,7 @@ Tree.prototype.drawNodes = function(nodes, source){
       // as in the basic example.
       .data(nodes, function(person){ return person.id; });
       
-  // Add any new nodes
+  // Add any new nodse
   var nodeEnter = node.enter().append("g")
       .attr("class", "person " + self.selector)
       
@@ -244,7 +249,7 @@ Tree.prototype.drawNodes = function(nodes, source){
       })
       .on('click', function(person){
         self.togglePerson(person);
-      });
+      });/////////////////////////////////////////////// LA DIRECTION DE L'ARBRE C'EST PAR LÀ
 
   // Draw the rectangle person boxes.
   // Start new boxes with 0 size so that
@@ -256,11 +261,24 @@ Tree.prototype.drawNodes = function(nodes, source){
         width: 0,
         height: 0
       });
+      
 
   // Draw the person's name and position it inside the box
-  nodeEnter.append("text")
-      .attr("dx", 0)
-      .attr("dy", 0)
+  nodeEnter.append("svg:image")
+    .attr("xlink:href", function(d){ return "/web/" + d.urlImage; })
+    .attr("alt", function(d){return d.altImage;})
+    .attr('x',-60)
+    .attr('y',-60)
+    .attr('width', 120)
+    .attr('height', 90)
+    .style('fill-opacity', 0);
+    
+  nodeEnter.append("a")
+    .attr("xlink:href",  function(d){ return sitePath + "personne/" + d.id; } /*function(){ return Routing.generate('oph_familytree_homepage'); }*/ )
+    .attr("alt", function(d){ return "+ d'informations sur " + d.name; } ) //Routing.generate('oph_familytree_view', { id: d.id })
+    .append("text")
+      .attr("dx", -65)
+      .attr("dy", 50)
       .attr("text-anchor", "start")
       .attr('class', 'name')
       .text(function(d) { 
@@ -294,6 +312,7 @@ Tree.prototype.drawNodes = function(nodes, source){
       
       // Transition exit nodes to the source's position
       .attr("transform", function(d) { return "translate(" + (self.direction * (source.y + boxWidth/2)) + "," + source.x + ")"; })
+      /*.attr("transform", function(d) { return "translate(" +  source.x + "," +  (self.direction * (source.y + boxWidth/2))  + ")"; })*/
       .remove();
   
   // Shrink boxes as we remove them    
@@ -354,8 +373,8 @@ Tree.prototype.togglePerson = function(person){
  */
 function collapse(person){
   person.collapsed = true;
-  if(person.parents){
-    person.parents.forEach(collapse);
+  if(person._parents){
+    person._parents.forEach(collapse);
   }
   if(person._children){
     person._children.forEach(collapse);
@@ -397,3 +416,4 @@ function transitionElbow(d){
     + "H" + d.source.y;
 }
 
+///////////////////////////////////////////////
