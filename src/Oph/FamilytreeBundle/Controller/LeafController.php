@@ -296,6 +296,30 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         return $this->render('OphFamilytreeBundle:Leaf:index.html.twig', array('persons' => $persons,   ));
     }
     
+    public function menuAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $persons = $em->getRepository('OphFamilytreeBundle:Person')->findAll();
+        return $this->render('OphFamilytreeBundle:Leaf:menu.html.twig', array('persons' => $persons,   ));
+    }
+
+    public function mapAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $persons = $em->getRepository('OphFamilytreeBundle:Person')->findAll();
+        return $this->render('OphFamilytreeBundle:Leaf:map.html.twig', array('persons' => $persons,   ));
+    }
+    
+    
+   public function treeAction()
+    {
+        $personService = $this->container->get('oph_familytree.personservice');
+        $personModel = $personService->getPersonModelById(/*4*/1);    
+        
+        return new JsonResponse($personModel);
+    }
+     
+    
     public function viewAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -307,15 +331,5 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         return $this->render('OphFamilytreeBundle:Leaf:view.html.twig', 
                        array(   'person' => $person,));
     }
-    
-    
-   public function treeAction()
-    {
-        $personService = $this->container->get('oph_familytree.personservice');
-        $personModel = $personService->getPersonModelById(4/*1*/);    
-        
-        return new JsonResponse($personModel);
-    }
-     
     
 }

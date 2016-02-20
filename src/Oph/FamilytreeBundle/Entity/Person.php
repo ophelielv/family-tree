@@ -22,9 +22,11 @@ class Person
     private $uploadedDocuments;
     private $tempMother;
     private $tempFather;
+    private $tempChild;
 
 	/**
 	 * @ORM\OneToOne(targetEntity="Oph\FamilytreeBundle\Entity\Img",  cascade={"persist", "remove"})
+	 * @Assert\Valid()
 	 */
 	private $img;
 	
@@ -32,12 +34,7 @@ class Person
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Picture", cascade={"persist", "remove"})
      */
     private $gallery; //array de Picture
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Document", cascade={"persist", "remove"})
-     */
-    private $listOfDocuments; //array de Document
-    
+
     /**
      * @var integer
      *
@@ -80,6 +77,20 @@ class Person
      * @ORM\Column(name="placeOfBirth", type="string", length=255, nullable=true)
      */
     private $placeOfBirth;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitudeBirth", type="float", nullable=true)
+     */
+    private $latitudeBirth;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", nullable=true)
+     */
+    private $longitudeBirth;
 
     /**
      * @var \DateTime
@@ -100,12 +111,12 @@ class Person
     /************************Parent***********************************************/
     /*******************Mother****************************************************/
      /**
-     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="mother")
+     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="mother", cascade={"persist", "remove"})
      */
     private $childrenOfMother;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfMother")
+     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfMother", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="mother_id", referencedColumnName="id", nullable=true)
      */
     private $mother;
@@ -152,20 +163,6 @@ class Person
     }
     
     /*******childrenOfMother*********/
-        
-    /**
-     * Add childrenOfMother
-     *
-     * @param \Oph\FamilytreeBundle\Entity\Person $childrenOfMother
-     * @return Person
-     */
-    public function addChildrenOfMother(\Oph\FamilytreeBundle\Entity\Person $childrenOfMother)
-    {
-        $this->childrenOfMother[] = $childrenOfMother;
-
-        return $this;
-    }
-
     /**
      * Get childrenOfMother
      *
@@ -176,26 +173,28 @@ class Person
         return $this->childrenOfMother;
     }
 
-     public function addChildOfMother(Person $child)
+    public function addChildOfMother(Person $child)
     {
         $this->childrenOfMother[] = $child;
+        $child->setMother($this);
         return $this;
     }
     
     public function removeChildrenOfMother(Person $child)
     {
         $this->childrenOfMother->removeElement($child);
+        $child->setMother(null);
     }
 
 
 /*******************Father****************************************************/
      /**
-     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="father")
+     * @ORM\OneToMany(targetEntity="Oph\FamilytreeBundle\Entity\Person", mappedBy="father", cascade={"persist", "remove"})
      */
     private $childrenOfFather;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfFather")
+     * @ORM\ManyToOne(targetEntity="Oph\FamilytreeBundle\Entity\Person", inversedBy="childrenOfFather", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="father_id", referencedColumnName="id", nullable=true)
      */
     private $father;
@@ -225,19 +224,6 @@ class Person
     }
     
     /*******childrenOfFather*********/
-        
-    /**
-     * Add childrenOfFather
-     *
-     * @param \Oph\FamilytreeBundle\Entity\Person $childrenOfFather
-     * @return Person
-     */
-    public function addChildrenOfFather(\Oph\FamilytreeBundle\Entity\Person $childrenOfFather)
-    {
-        $this->childrenOfFather[] = $childrenOfFather;
-
-        return $this;
-    }
 
     /**
      * Get childrenOfFather
@@ -252,25 +238,17 @@ class Person
      public function addChildOfFather(Person $child)
     {
         $this->childrenOfFather[] = $child;
+        $child->setFather($this);
         return $this;
     }
     
     public function removeChildrenOfFather(Person $child)
     {
         $this->childrenOfFather->removeElement($child);
+        $child->setFather(null);
     }
 
-    
-    /***********************************/
-    public function __construct() {
-        $this->childrenOfMother = new ArrayCollection();
-        $this->childrenOfFather = new ArrayCollection();
-
-        $this->gallery = new ArrayCollection();
-        $this->listOfDocuments = new ArrayCollection();
-
-    }
-
+    /************************UPLOAD MOTHER FATHER CHILD*********************/
     /**
      * @ORM\PreFlush()
      */
@@ -292,8 +270,42 @@ class Person
         }
         $this->setFather($this->tempFather);
     }
-/*************************************************************************************/
+    
+    /**
+     * @ORM\PreFlush()
+     */
+    public function uploadChild()
+    {
+        if (null === $this->tempChild) {
+            return;
+        }
+        if($this->gender == 'M'){
+            $this->addChildOfMother($this->tempChild);
+        }
+        else if($this->gender == 'F'){
+            $this->addChildOfFather($this->tempChild);
+        }
+    }
+
+/************************ Constructeur ***************************************************/
+
+    public function __construct() {
+        $this->childrenOfMother = new ArrayCollection();
+        $this->childrenOfFather = new ArrayCollection();
+
+        $this->gallery = new ArrayCollection();
+        $this->listOfDocuments = new ArrayCollection();
+    }
+
+
 /****************** ManyToMany Documents************************************************/
+
+        
+    /**
+     * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Document", cascade={"persist", "remove"})
+     */
+    private $listOfDocuments; //array de Document
+    
     public function addDocument(Document $document)
     {
         // Ici, on utilise l'ArrayCollection vraiment comme un tableau
@@ -662,7 +674,7 @@ class Person
         $this->tempMother = $par;
     }
     
-        public function getTempFather()
+    public function getTempFather()
     {
         return $this->tempFather;
     }
@@ -672,5 +684,62 @@ class Person
         $this->tempFather = $par;
        // return $this->linkedParent;
     }
+///////////////
+    public function getTempChild()
+    {
+        return $this->tempChild;
+    }
+    
+    public function setTempChild(Person $child)
+    {
+        $this->tempChild = $child;
+    }
 
+//////////////
+
+    /**
+     * Set latitudeBirth
+     *
+     * @param float $latitudeBirth
+     * @return Person
+     */
+    public function setLatitudeBirth($latitudeBirth)
+    {
+        $this->latitudeBirth = $latitudeBirth;
+
+        return $this;
+    }
+
+    /**
+     * Get latitudeBirth
+     *
+     * @return float 
+     */
+    public function getLatitudeBirth()
+    {
+        return $this->latitudeBirth;
+    }
+
+    /**
+     * Set longitudeBirth
+     *
+     * @param float $longitudeBirth
+     * @return Person
+     */
+    public function setLongitudeBirth($longitudeBirth)
+    {
+        $this->longitudeBirth = $longitudeBirth;
+
+        return $this;
+    }
+
+    /**
+     * Get longitudeBirth
+     *
+     * @return float 
+     */
+    public function getLongitudeBirth()
+    {
+        return $this->longitudeBirth;
+    }
 }

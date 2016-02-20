@@ -1,0 +1,63 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/index.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Carte
+{% endblock %}
+
+{% block ophfamilytree_body %}
+    <div class="container">
+        <div class="page-header">
+           <h1>Villes de naissance</h1>
+        </div>
+        
+        <div id="map"></div>
+    </div>
+  
+    
+    
+{% endblock %} 
+
+{% block familytree_js %}
+
+    {% javascripts '@OphFamilytreeBundle/Resources/public/js/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@OphFamilytreeBundle/Resources/public/js/vendor/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    <script type="text/javascript">
+        setupTree('{{ path('oph_familytree_tree') }}', '{{ path('oph_familytree_homepage') }}');
+    </script>
+    
+    <script type="text/javascript">
+        var map = L.map('map', {
+		    center: [44, 4],
+		    zoom: 6,
+		    scrollWheelZoom: false,     // this map option disables world wrapping. by default, it is false.
+	        continuousWorld: false,     // this option disables loading tiles outside of the world bounds.
+	        noWrap: true
+		});
+        
+        L.Icon.Default.imagePath = '/web/bundles/ophfamilytree/css/images';
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy;'
+        }).addTo(map);
+        
+        {% for p in persons %}
+            {% if ( p.latitudeBirth is not null) and ( p.longitudeBirth is not null) %}
+                L.marker([{{ p.latitudeBirth }}, {{ p.longitudeBirth }} ]).addTo(map)
+                .bindPopup('<strong>{{ p.placeOfBirth }}</strong><p>Naissance de <a href="{{ path('oph_familytree_view', {'id': p.id}) }}" class="btn-jay" role="button"> {{p.completeName}}</a></p>')
+                 //<a href="{# path('oph_familytree_edit', {'id': person.id}) #}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
+                /*.on('click', function(e) { 
+                    alert(e.latlng);
+                })*/
+                ;         
+            {%endif%}
+        {%endfor%}
+    </script>
+    
+{% endblock %}

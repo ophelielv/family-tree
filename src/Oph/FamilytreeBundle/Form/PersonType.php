@@ -20,11 +20,14 @@ class PersonType extends AbstractType
             ->add('gender',         'choice',   array('label'=>'Genre','choices'  => array('M' => 'Homme', 'F' => 'Femme')) )
             ->add('dateOfBirth',    'birthday', array('label'=>'Date de naissance', 'years' => range(1800, date('Y')), 'empty_value' => '--', 'required' => false))
             ->add('placeOfBirth',   'text',     array('label'=>'à', 'required' => false))
+            ->add('latitudeBirth',  'number',   array('label'=>'Latitude', 'required' => false))
+            ->add('longitudeBirth', 'number',   array('label'=>'Longitude', 'required' => false))
             ->add('dateOfDeath',    'birthday', array('label'=>'Date de décès', 'years' => range(1800, date('Y')), 'empty_value' => '--','empty_data'  => null, 'required' => false))
             ->add('placeOfDeath',   'text',     array('label'=>'à', 'required' => false))
             ->add('tempMother',     'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
             ->add('tempFather',     'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
-            ->add('img',   new ImgType(),   array('label' => 'Choisir un fichier','required' => false))
+            ->add('tempChild',      'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
+            ->add('img',    new ImgType(),      array('label' => 'Choisir un fichier','required' => false))
             ->add('Enregistrer',    'submit');
     }
     

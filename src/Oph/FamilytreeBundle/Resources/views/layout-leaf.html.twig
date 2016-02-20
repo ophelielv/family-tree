@@ -8,21 +8,19 @@
 
 {% block body %}
 
-    <div class="page-header">
-        <div class="container">
+    <div class="page-header container">
             
-            <div class="col-md-2">
-                {% if person.img is not null %}
-                    <img src="{{ (person.img.webPath ) | imagine_filter('my_thumb') }}" alt="{{person.img.alt}}"/>
-                {% else %}
-                     <img src="{{ 'bundles/ophfamilytree/images/pas-d-avatar.png' | imagine_filter('my_thumb') }}" alt="pas d'avatar"/>
-                {% endif %}
-            </div>
-            
-            <div class="col-md-10">
-                <h1>{{person.firstName}} {{person.name}} </h1>
-            </div>
-        </div><!--container-->
+        <div class="col-md-2">
+            {% if person.img is not null %}
+                <img src="{{ (person.img.webPath ) | imagine_filter('my_thumb') }}" alt="{{person.img.alt}}"/>
+            {% else %}
+                 <img src="{{ 'bundles/ophfamilytree/images/pas-d-avatar.png' | imagine_filter('my_thumb') }}" alt="pas d'avatar"/>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-10">
+            <h1>{{person.firstName}} {{person.name}} </h1>
+        </div>
     </div><!--end page-header-->
 
 

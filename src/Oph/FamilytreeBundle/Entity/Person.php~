@@ -14,6 +14,7 @@ use Oph\FamilytreeBundle\Entity\Image;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Oph\FamilytreeBundle\Entity\PersonRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Person
 {
@@ -30,12 +31,12 @@ class Person
 	/**
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Picture", cascade={"persist", "remove"})
      */
-    private $gallery; //array de Pictures
+    private $gallery; //array de Picture
     
     /**
      * @ORM\ManyToMany(targetEntity="Oph\FamilytreeBundle\Entity\Document", cascade={"persist", "remove"})
      */
-    private $listOfDocuments; //array de Documents
+    private $listOfDocuments; //array de Document
     
     /**
      * @var integer
@@ -46,17 +47,6 @@ class Person
      */
     private $id;
 
-    /**
-     *@ORM\Column(name="anitasFamily", type="boolean", nullable=true, options={"default":false})
-     */
-    private $anitasFamily;
-    
-    
-    /**
-     *@ORM\Column(name="georgesFamily", type="boolean", nullable=true, options={"default":false})
-     */
-    private $georgesFamily;
-    
      /**
       * @ORM\Column(name="gender", type="string", length=1)
       * @Assert\Choice(choices = {"M", "F"}, message = "gender")
@@ -90,6 +80,20 @@ class Person
      * @ORM\Column(name="placeOfBirth", type="string", length=255, nullable=true)
      */
     private $placeOfBirth;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitudeBirth", type="float", nullable=true)
+     */
+    private $latitudeBirth;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", nullable=true)
+     */
+    private $longitudeBirth;
 
     /**
      * @var \DateTime
@@ -104,13 +108,6 @@ class Person
      * @ORM\Column(name="placeOfDeath", type="string", length=255, nullable=true)
      */
     private $placeOfDeath;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string",nullable=true, length=255, nullable=true)
-     */
-    private $description;
     
     private $completeName;
     /******************************************************************************************/
@@ -149,6 +146,23 @@ class Person
     public function getMother()
     {
         return $this->mother;
+    }
+    
+
+    public function getMotherId()
+    {
+        if($this->mother==null){
+            return -1;
+        }
+        return $this->mother->getId();
+    }
+    
+    public function getFatherId()
+    {
+        if($this->father==null){
+            return -1;
+        }
+        return $this->father->getId();
     }
     
     /*******childrenOfMother*********/
@@ -268,9 +282,30 @@ class Person
 
         $this->gallery = new ArrayCollection();
         $this->listOfDocuments = new ArrayCollection();
+
     }
 
+    /**
+     * @ORM\PreFlush()
+     */
+    public function uploadMother()
+    {
+        if (null === $this->tempMother) {
+            return;
+        }
+        $this->setMother($this->tempMother);
+    }
 
+    /**
+     * @ORM\PreFlush()
+     */
+    public function uploadFather()
+    {
+        if (null === $this->tempFather) {
+            return;
+        }
+        $this->setFather($this->tempFather);
+    }
 /*************************************************************************************/
 /****************** ManyToMany Documents************************************************/
     public function addDocument(Document $document)
@@ -463,52 +498,6 @@ class Person
 
     
     /**
-     * Set anitasFamily
-     *
-     * @param boolean $anitasFamily
-     * @return Person
-     */
-    public function setAnitasFamily($anitasFamily)
-    {
-        $this->anitasFamily = $anitasFamily;
-
-        return $this;
-    }
-
-    /**
-     * Get anitasFamily
-     *
-     * @return boolean 
-     */
-    public function getAnitasFamily()
-    {
-        return $this->anitasFamily;
-    }
-
-    /**
-     * Set georgesFamily
-     *
-     * @param boolean $georgesFamily
-     * @return Person
-     */
-    public function setGeorgesFamily($georgesFamily)
-    {
-        $this->georgesFamily = $georgesFamily;
-
-        return $this;
-    }
-
-    /**
-     * Get georgesFamily
-     *
-     * @return boolean 
-     */
-    public function getGeorgesFamily()
-    {
-        return $this->georgesFamily;
-    }
-
-    /**
      * Set img
      *
      * @param \Oph\FamilytreeBundle\Entity\Img $img
@@ -541,29 +530,7 @@ class Person
         return $completeName;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Person
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
+    
     /**
      * Set gender
      *
@@ -597,7 +564,7 @@ class Person
         $this->uploadedPictures = $files;
     }
 
-     /**
+   /**
      * @ORM\PreFlush()
      */
     public function uploadPictures()
@@ -615,6 +582,9 @@ class Person
         }
     }
     
+   /**
+     * @ORM\PreFlush()
+     */
     public function getUploadedDocuments()
     {
         return $this->uploadedDocuments;
@@ -625,7 +595,7 @@ class Person
         $this->uploadedDocuments = $files;
     }
     
-     /**
+    /**
      * @ORM\PreFlush()
      */
     public function uploadDocuments()
@@ -696,33 +666,25 @@ class Person
         return $this->completeName;
     }
 
-    public function getLinkedParent()
+    public function getTempMother()
     {
-        return $this->linkedParent;
+        return $this->tempMother;
     }
     
-    public function setLinkedParent(Person $par)
+    public function setTempMother(Person $par)
     {
-        $this->linkedParent = $par;
+        $this->tempMother = $par;
+    }
+    
+        public function getTempFather()
+    {
+        return $this->tempFather;
+    }
+    
+    public function setTempFather(Person $par)
+    {
+        $this->tempFather = $par;
        // return $this->linkedParent;
-    }
-    
-     /**
-     * @ORM\PreFlush()
-     */
-    public function linkParents()
-    {
-        if (null === $this->linkedParent) 
-        {
-            return;
-        }
-        foreach($this->linkedParent as $lP)
-        {
-
-            $this->addParent($lP);
-    
-            unset($linkedParent);
-        }
     }
 
 }

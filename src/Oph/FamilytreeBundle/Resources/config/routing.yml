@@ -5,7 +5,11 @@ oph_familytree_homepage:
 oph_familytree_tree:
     path:     /tree
     defaults: { _controller: OphFamilytreeBundle:Leaf:tree }
-    
+
+oph_familytree_map:
+    path:     /map
+    defaults: { _controller: OphFamilytreeBundle:Leaf:map }
+
 oph_familytree_add:
     path:     /add/
     defaults: { _controller: OphFamilytreeBundle:Leaf:add }

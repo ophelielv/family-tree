@@ -1,0 +1,72 @@
+.float-right{ float: right;}
+.tac{text-align:center;}
+
+/*******tree*****/
+svg {
+  margin-top: 32px;
+  border: 1px solid #aaa;
+}
+
+.person rect {
+    fill: #fff;
+    stroke: #3D70A5;
+    stroke-width: 1px;
+}
+
+.person {
+  font: 14px sans-serif;
+  cursor: pointer;
+}
+
+.descendant{
+  font: 14px sans-serif;
+  cursor: pointer;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.name{
+  color:red;
+  padding-left:20px;
+}
+/*Bouton*/
+.btn-jay {
+  border: none;
+  border-radius: 0;
+  color: white!important;
+  cursor: pointer;
+  text-align: center;
+  background: #3D70A5;
+  display: inline-block;
+  padding: 5px 9px;
+  margin-left: 2px;
+}
+.btn-jay:hover {background: #1FA2E1;color: rgb(255, 255, 255);border: none;}
+.btn-jay:hover>a, .btn-jay:hover>a>div, .btn-jay:hover>a>div>sup{   color: #F50043;text-decoration:none;   border: none;}
+.btn-jay a:hover {text-decoration: none;}
+.btn-jay a, .btn-jay>a>div, .btn-jay>a>div>sup{color: white;}
+
+/*Tree*/
+#myDiagram { 
+  margin-bottom:20px;
+  width:100%;
+  height:900px; 
+  text-align:center;
+}
+
+/*Map*/
+#map { 
+  height: 600px; 
+  padding-top: 20px;
+  
+}

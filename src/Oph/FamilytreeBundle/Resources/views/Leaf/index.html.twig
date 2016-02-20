@@ -9,92 +9,22 @@
 {% block ophfamilytree_body %}
     <div class="container">
         <div class="page-header">
-            <h1>Arbre généalogique <small>The pay's not great, but the work is hard</small></h1>
-        </div><!--end page-header-->
+            <h1>Arbre généalogique</h1>
+        </div>
     </div>
-    
     <div class="container">
-        <div class="jumbotron">
-            <h3>Tout marche ! 
-                <small>sauf ...<br>
-                comment afficher date photos // slider<br>
-                + validation données<br>
-                + fosuserbundle <br>
-                + taille ad andre salleyrettes <br>
-                + recherche (autocompletion)<br>
-                + openstreetmap / google map<br>
-                + service mail ──────────────────────<br>
-                + appel ajax (action return tableau persons json)<br>
-                + http://w3bits.com/labs/css-masonry/<br>
-                + ah et bug quand on rentre date vide (mais current date) ---------> voir constructeur!!?<br>
-                + et aussiiii manytomany documents/personnes : afficher les personnes liés à un doc !<br>
-                + tin il manque tjs un truc : service calculAge!!<br>
-                ...mais avant :<strong> refaire index avec arbre en js !!</strong></small><br>
-                http://www.symfony2cheatsheet.com/</h3>
-        </div><!--end page-header-->
+        <p>Cliquer sur les photos pour déplier / replier l'arbre. Cliquer sur les noms pour consulter les fiches.</p>
+        <div id="myDiagram"></div>
     </div>
-    
-    <!-------------------------------------------------->
-    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
-     In this case we also add a background color so we can see that area. -->
-    <div class="container" >
-         <div id="myDiagram" style=" width:100%; height:600px"></div>
-    </div>
-     *********sitePath******{{ path('oph_familytree_homepage') }}
-    <div class="container">
-        <div class="row-fluid">
-            {% for person in persons %}
-            
-                <div class="col-sm-6 col-md-3">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            {{ person.firstName }} {{ person.name }}
-                        </div><!--end panel HEADING-->
-                        <div class="panel-body">
-                            {% if person.img is not null %}
-                                <img src="{{ (person.img.webPath ) | imagine_filter('my_thumb') }}" alt="{{person.img.alt}}"/>
-                            {% else %}
-                                 <img src="{{ 'bundles/ophfamilytree/images/pas-d-avatar.png' | imagine_filter('my_thumb') }}" alt="pas d'avatar"/>
-                            {% endif %}
-                            
-                            <p>{% if person.dateOfBirth is not null %}{{person.dateOfBirth|date('Y')}}{%else%}--{% endif %} ~ {% if person.dateOfDeath is not null %}{{person.dateOfDeath|date('Y')}}{%else%}--{% endif %}</p>
-                             
-                            <p><a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-default" role="button">Voir</a><!-- <a href="{# path('oph_familytree_edit', {'id': person.id}) #}" class="btn btn-default" role="button">Editer</a>--></p>
-                        </div><!--end panel content-->
-                    </div><!--end panel group-->
-                </div><!--end col-->                        
-              
-            {% endfor %}
-        </div><!--end row-fluid-->
-    </div><!--end container-->
-    
 {% endblock %} 
 
 {% block familytree_js %}
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    {% javascripts '@OphFamilytreeBundle/Resources/public/js/*' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     
-        <script type="text/javascript">
-        
-        {#    $( document ).ready(function() {#}
-        {#        console.log('0');#}
-        {#        $.ajax({#}
-        {#            url: '{{ path('oph_familytree_dtrois') }}',#}
-        {#            success: function(res){#}
-        {#            console.log(res);#}
-        {#        },#}
-        {#            error: function(){#}
-        {#            alert('failure');#}
-        {#        }#}
-        {#        });#}
-        {#    });#}
-        {#    console.log('10');#}
-        
+    
+    <script type="text/javascript">
         setupTree('{{ path('oph_familytree_tree') }}', '{{ path('oph_familytree_homepage') }}');
-     
-        </script>
+    </script>
+    
     
 {% endblock %}

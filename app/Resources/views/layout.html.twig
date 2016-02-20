@@ -6,23 +6,26 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>{% block title %}Family tree{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Publier sa généalogie pas comme une truffe">
+        <meta name="description" content="Généalogie">
         <meta name="author" content="Ophel'">
+        
          <!-- Le styles -->
-            {% block stylesheets %}
-                {# On charge le CSS de bootstrap depuis le site directement #}
-                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-                
-                {% stylesheets '@OphFamilytreeBundle/Resources/public/css/*' %}
-                    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-                {% endstylesheets %}
-            {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.css"/>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Kreon:400,700' rel='stylesheet' type='text/css'>
+
+            {% stylesheets '@OphFamilytreeBundle/Resources/public/css/*' %}
+                <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            {% endstylesheets %}
+        {% endblock %}
     </head>
+
 
     <body>
         <div class="container-fluid">
             <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
+                <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -31,44 +34,49 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="{{path('oph_familytree_homepage')}}">Généal</a>
+                      <a class="navbar-brand" href="{{path('oph_familytree_homepage')}}">Généalogie</a>
                     </div><!--end navbar header-->
+                    
+                    
+        
                     
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ path('oph_familytree_homepage') }}">Accueil<span class="sr-only">(current)</span></a></li>
-                            <li><a href="{{path('oph_familytree_add')}}">Agrandir la famille</a></li>
+                            <li {% if app.request.get('_route') == 'oph_familytree_homepage' %} class="active" {% endif %} ><a href="{{ path('oph_familytree_homepage') }}"><i class="glyphicon glyphicon-leaf"></i> Arbre<span class="sr-only">(current)</span></a></li>
+                            <li {% if app.request.get('_route') == 'oph_familytree_map' %} class="active" {% endif %} ><a href="{{path('oph_familytree_map')}}">Carte</a></li>
+                            <li {% if app.request.get('_route') == 'oph_familytree_add' %} class="active" {% endif %} ><a href="{{path('oph_familytree_add')}}">Ajouter</a></li>
                         </ul>
-                         <p class="navbar-text navbar-right">Anita et Georges</p>
+                          {{ render(controller("OphFamilytreeBundle:Leaf:menu")) }}
                     </div><!-- /.navbar-collapse -->
                 <!-- Brand and toggle get grouped for better mobile display -->
-                </div><!-- /.container-fluid -->
+                </div><!-- /.container -->
             </nav>
             
-            <div class="container">
-                <div id="content">
-                    {% block body %}
+            <div id="content" class="container-fluid">
+                {% block body %}
                     
-                    {% endblock %}
-                </div><!--end content-->
-            </div>
+               {% endblock %}
+            </div><!--end content-->
             <hr>
             
-          
-            
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-            <script src="web/js/fos_js_routes.js"></script>
             
-
+            {% javascripts '@OphFamilytreeBundle/Resources/public/js/vendor/*' %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% javascripts '@OphFamilytreeBundle/Resources/public/js/*' %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            
+    
             {% block javascripts %}
                 
             {% endblock %}
-             
-             
-               <footer>
-                <p>A family tree by Ophel' © {{ 'now'|date('Y') }}.</p>
+            
+            <footer class="tac container">
+                <p>© {{ 'now'|date('Y') }}.</p>
             </footer>
            </div><!--end content-->
         </div><!--end container-fluid-->  

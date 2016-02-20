@@ -37,7 +37,6 @@ class PersonService
             $pM->setUrlImage('media/cache/my_thumb/bundles/ophfamilytree/images/pas-d-avatar.png');
             $pM->setAltImage($person->getCompleteName());
         }
-     //   $pM->setUrlFiche($url = $this->generateUrl('oc_platform_home'););
         
         $motherId = $person->getMotherId();
         $fatherId = $person->getFatherId();
@@ -55,6 +54,9 @@ class PersonService
                 $pM->addParent($fatherModel);
             }
         }
+        
+        //children
+        
         return $pM;
     }
 

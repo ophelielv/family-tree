@@ -8,14 +8,11 @@
 
 {% block ophfamilytree_body %}
 
-    <div class="container">
-        
-        <div class=" resume">
+    <div id="resume">
+        <div class="container">
             <h2 class="text-center">Résumé</h2>
             <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
             Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
-
-            
             <p>
                 {% if person.gender == 'F' %}Fille{% else %}Fils{%endif %} de 
                 {% if person.mother is null %}
@@ -27,61 +24,54 @@
                 {% if person.father is null %}
                     <strong>?</strong>
                 {% else %}
-                    <a href="{{ path('oph_familytree_view', {'id':person.father.id})}}">{{person.father.firstName}} {{person.father.name}}</a>
+                    <a href="{{ path('oph_familytree_view', {'id':person.father.id})}}">{{person.father.firstName}} {{person.father.name}}</a>.
                 {% endif %}
+            <br>
+                {% if person.gender == 'F' %}
+                    {% if person.childrenOfMother is empty %}
+                    {% else %}Mère de :
+                        <ul>
+                        {%for c in person.childrenOfMother %}
+                            <li><a href="{{ path('oph_familytree_view', {'id':c.id})}}">{{c.completeName}}</a></li>
+                        {%endfor%}
+                        </ul>
+                    {%endif%}
+                {% else %}
+                    {% if person.childrenOfFather is empty %}
+                    {% else %}Père de :
+                        <ul>
+                        {%for c in person.childrenOfFather %}
+                            <li><a href="{{ path('oph_familytree_view', {'id':c.id})}}">{{c.completeName}}</a></li>
+                        {%endfor%}
+                        </ul>
+                    {%endif%}
+                {%endif%}
             </p>
             
                 
-            </div><!--end container-->
+        </div>
+    </div><!--end resume-->
 
+    <div id="galerie">
         {% if person.gallery is not empty %}
             <h2 class="text-center">Galerie</h2>
-            <div id="galleryCarousel" class="carousel slide" data-ride="carousel">
-            
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#galleryCarousel" data-slide-to="0" class="active"></li>
-                    
-                    {% if person.gallery|length > 1 %}
-                        {% for i in 1..(person.gallery|length -1)%}
-                                <li data-target="#galleryCarousel" data-slide-to="{{i}}"></li>
-                        {%endfor%}
-                    {% endif %}
-                </ol>
-                
-                <!-- Wrapper for slides -->
+           
+            <!--galerie slick---->
+            <div class="carousel-slick">
                 {% for photo in person.gallery %}
-                    {% if photo == person.gallery|first %}
-                        <div class="carousel-inner" role="listbox">
-                            <div class="item active">
-                                <img src="{{  (photo.img.webPath) | imagine_filter('my_heighten') }}" alt="{{photo.img.alt}}"/>
-                        </div>
-                    {% else %}
-                        <div class="item">
-                            <img src="{{  (photo.img.webPath) | imagine_filter('my_heighten') }}" alt="{{photo.img.alt}}"/>
-                        </div>
-                    {% endif%}
+                    <div> <img src="{{  (photo.img.webPath) | imagine_filter('my_heighten') }}" alt="{{photo.img.alt}}"/></div>
                 {%endfor%}
-            </div><!--end carousel slide-->
-            
-              <!-- Left and right controls -->
-              <a class="left carousel-control" href="#galleryCarousel" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="right carousel-control" href="#galleryCarousel" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-              </a>
             </div>
+            
         {%else%}
             <p>Pas de photo!</p>
         {%endif%}
-        
-         <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-primary" role="button">Editer la galerie</a>
-    </div><!--end container galerie-->
     
-    <div class="container">
+        <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+    </div><!--end galerie-->
+    
+    <div id="documents">
+        <div class="container">
         <h2 class="text-center">Documents</h2>
         
             {% if person.listOfDocuments is empty %}
@@ -91,9 +81,9 @@
             
                 {% for doc in person.listOfDocuments %}
                     <div class="well">
-                        <h4 class="text-primary">{{ doc.title }} <small>Le {{doc.dateDocument|date('d-m-Y')}}</small></h4>
+                        <h4 class="text-primary">{{ doc.title }} <small>le {{doc.dateDocument|date('d-m-Y')}}</small></h4>
                         <p>{{ doc.description|raw  }}</p>
-                        <button data-toggle="collapse" class="btn btn-default btn-lg" data-target="#doc-{{doc.id}}">
+                        <button data-toggle="collapse" class="btn btn-jay btn-lg" data-target="#doc-{{doc.id}}">
                             <span class="glyphicon glyphicon-send"> Voir</span>
                         </button>
                         <div id="doc-{{doc.id}}" class="collapse">
@@ -103,13 +93,12 @@
                 {%endfor%}
             {%endif%}
 
+            <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer les documents</a>
             
-            <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-primary" role="button">Editer les documents</a>
-    </div><!--end container documents-->
+        </div>
+    </div><!--end documents-->
    
-    
-    
-    <hr>
+
     
     <div class="text-center container">
         <p> 
@@ -118,5 +107,11 @@
             <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a>
         </p>
     </div>
+    
+    <script type="text/javascript">
+      
+	
+    </script>
+
 
 {% endblock %}

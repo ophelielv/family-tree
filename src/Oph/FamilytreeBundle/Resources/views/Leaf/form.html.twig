@@ -23,13 +23,7 @@
         </div>
       </div>
       
-      <div class="form-group">
-          {{ form_label(form.name, "Description / Lien de parenté", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-          {{ form_errors(form.description) }}
-        <div class="col-sm-4">
-          {{ form_widget(form.description, {'attr': {'class': 'form-control'} }) }}
-        </div>
-      </div>
+    
       
       <div class="form-group">
           {{ form_label(form.gender, "Genre", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -48,10 +42,27 @@
       <div class="form-group">
         {{ form_label(form.placeOfBirth, "à", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
         {{ form_errors(form.placeOfBirth) }}
+        
         <div class="col-sm-4">
           {{ form_widget(form.placeOfBirth, {'attr': {'class': 'form-control'} }) }}
+        
+          <div class="coord-form">
+            <!--latitude-->
+            {{ form_label(form.latitudeBirth, "Latitude ", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            {{ form_errors(form.latitudeBirth) }}
+            {{ form_widget(form.latitudeBirth, {'attr': {'class': 'form-control'} }) }}
+          </div>
+          
+          <div class="coord-form">
+            <!--longitude-->
+            {{ form_label(form.longitudeBirth, "Longitude ", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            {{ form_errors(form.longitudeBirth) }}
+            {{ form_widget(form.longitudeBirth, {'attr': {'class': 'form-control'} }) }}
+          </div>
+        
         </div>
       </div>
+      
   
       <div class="form-group">
           {{ form_label(form.dateOfDeath, "Décédé(e) le", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -82,9 +93,15 @@
         <div class="col-sm-8 ">
           {{ form_widget(form.tempFather) }}
         </div>
-        
       </div> 
-
+      
+      <div class="form-group">
+        {{ form_label(form.tempChild, "Parent de :", {'label_attr': {'class': 'col-sm-3 control-label'} }) }}
+        {{ form_errors(form.tempChild) }}
+        <div class="col-sm-8 ">
+          {{ form_widget(form.tempChild) }}
+        </div>
+      </div> 
     
     </div><!--end well-->    
     
@@ -101,13 +118,14 @@
     
    
 
-    <div class="container">   
+    <div class="container tac">   
       <div class=" form-group">
-         {{ form_row(form.Enregistrer, { 'label': 'Terminer et enregistrer' }) }}
-      </div>
+        {{ form_widget(form.Enregistrer, {'label': 'Terminer et enregistrer','attr': {'class': 'btn btn-default'}}) }}
     </div><!--end container-->
     
     {{ form_end(form) }}
+    
+    
 
 
 </div><!--end container-->

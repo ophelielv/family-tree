@@ -1,0 +1,14 @@
+{# menu.html.twig #}
+
+   
+
+<ul class="nav navbar-nav navbar-right">
+         <li class="dropdown">
+        <a href="#" class="dropdown-toggle navbar-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Voir directement <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            {% for p in persons%}
+                <li><a href="{{ path('oph_familytree_view', {'id': p.id}) }}"> {{p.completeName}}</a></li>
+            {% endfor%}
+        </ul>
+    </li>
+</ul>
