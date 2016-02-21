@@ -11,7 +11,7 @@ oph_familytree_map:
     defaults: { _controller: OphFamilytreeBundle:Leaf:map }
 
 oph_familytree_add:
-    path:     /add/
+    path:     /add
     defaults: { _controller: OphFamilytreeBundle:Leaf:add }
 
 oph_familytree_edit:
@@ -21,7 +21,7 @@ oph_familytree_edit:
         id: \d+
 
 oph_familytree_edit_photos:
-    path:     /personne/{id}/galerie/editer
+    path:     /personne/{id}/galerie/edit
     defaults: { _controller: OphFamilytreeBundle:Leaf:editPhotos }
     requirements:
         id: \d+
@@ -46,20 +46,20 @@ oph_familytree_delete:
         id: \d+
 
 oph_familytree_delete_avatar:
-    path:     /personne/{id}/avatar/supprimer
+    path:     /personne/{id}/avatar/delete
     defaults: { _controller: OphFamilytreeBundle:Leaf:deleteAvatar }
     requirements:
         id: \d+
 
 oph_familytree_delete_document:
-    path:     /personne/{id}/documents/supprimer/{idDocument}
+    path:     /personne/{id}/documents/delete/{idDocument}
     defaults: { _controller: OphFamilytreeBundle:Leaf:deleteDocument }
     requirements:
         id: \d+
         idDocument: \d+
 
 oph_familytree_delete_photo:
-    path:     /personne/{id}/galerie/supprimer/{idPicture}
+    path:     /personne/{id}/galerie/delete/{idPicture}
     defaults: { _controller: OphFamilytreeBundle:Leaf:deletePhoto }
     requirements:
         id: \d+

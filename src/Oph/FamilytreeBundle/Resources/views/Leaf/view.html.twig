@@ -53,9 +53,9 @@
     </div><!--end resume-->
 
     <div id="galerie">
+        <h2 class="text-center">Galerie</h2>
         {% if person.gallery is not empty %}
-            <h2 class="text-center">Galerie</h2>
-           
+            
             <!--galerie slick---->
             <div class="carousel-slick">
                 {% for photo in person.gallery %}
@@ -64,10 +64,13 @@
             </div>
             
         {%else%}
-            <p>Pas de photo!</p>
+            <div class="container">
+                <p>Pas de photo!</p>
+            </div>
         {%endif%}
-    
-        <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+        <div class="container">
+            <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+        </div>
     </div><!--end galerie-->
     
     <div id="documents">
