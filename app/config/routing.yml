@@ -8,3 +8,13 @@ app:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+login:
+    pattern:   /login
+    defaults:  { _controller: OphUserBundle:Security:login }
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    pattern:   /logout
