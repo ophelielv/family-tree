@@ -6,25 +6,21 @@
 
 p,a, h4, h5 {font-family: 'Open Sans', sans-serif;}
 h1,h2,h3{font-family: 'Kreon', serif;}
-h2 { letter-spacing: 0.12rem;}
+h2 { letter-spacing: 0.12rem;  margin-bottom: 32px; }
 
+/****************/
+.navbar-inverse .navbar-nav>li>a {     color: white;}
+.navbar-inverse .navbar-nav>li>a:hover {     color: #777;}
+.navbar-inverse .navbar-brand {    color: white;}
+.navbar-inverse .navbar-brand:hover {    color: #777;}
 /****************/
 .container-fluid{  padding-left: 0!important;  padding-right: 0!important;}
 #resume{   width:100%;   position:relative;   padding-bottom: 30px;}
-#resume h2{    margin-bottom: 32px; }
-
-#galerie{  background-color: #5588B3;  padding: 34px 70px;}
-#galerie h2{    margin-bottom: 32px; color: white;}
-
-#documents{  padding-top: 45px; padding-bottom: 40px;}
-#documents h2{    margin-bottom: 32px; }
+#resume ul{list-style-type: none;}
+#galerie{  padding: 34px 70px;}
+#documents{  padding-top: 20px; padding-bottom: 40px;}
 
 /*******tree*****/
-svg {
-  margin-top: 32px;
-  border: 1px solid #aaa;
-}
-
 .person rect {
     fill: #fff;
     stroke: #3D70A5;
@@ -48,9 +44,11 @@ svg {
 }
 
 svg {
-    display: block;
+   /* display: block;
+    margin-top: 32px;
     width: 100%;
     height: 100%;
+    en conflit avec afffichage profiler*/
 }
 
 .name{
@@ -80,6 +78,7 @@ svg {
   width:100%;
   height:900px; 
   text-align:center;
+  border: 1px solid #aaa;
 }
 
 /*Map*/

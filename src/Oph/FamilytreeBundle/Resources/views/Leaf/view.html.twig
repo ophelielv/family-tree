@@ -53,29 +53,31 @@
     </div><!--end resume-->
 
     <div id="galerie">
-        <h2 class="text-center">Galerie</h2>
-        {% if person.gallery is not empty %}
-            
-            <!--galerie slick---->
-            <div class="carousel-slick">
-                {% for photo in person.gallery %}
-                    <div> <img src="{{  (photo.img.webPath) | imagine_filter('my_heighten') }}" alt="{{photo.img.alt}}"/></div>
-                {%endfor%}
-            </div>
-            
-        {%else%}
-            <div class="container">
-                <p>Pas de photo!</p>
-            </div>
-        {%endif%}
         <div class="container">
-            <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+            <h2 class="text-center">Galerie</h2>
+            {% if person.gallery is not empty %}
+                
+                <!--galerie slick---->
+                <div class="carousel-slick">
+                    {% for photo in person.gallery %}
+                        <div> <img src="{{  (photo.img.webPath) | imagine_filter('my_heighten') }}" alt="{{photo.img.alt}}"/></div>
+                    {%endfor%}
+                </div>
+                
+            {%else%}
+                <div class="container">
+                    <p>Pas de photo !</p>
+                </div>
+            {%endif%}
+            <div class="container">
+                <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+            </div>
         </div>
     </div><!--end galerie-->
     
     <div id="documents">
         <div class="container">
-        <h2 class="text-center">Documents</h2>
+            <h2 class="text-center">Documents</h2>
         
             {% if person.listOfDocuments is empty %}
                 <p>Pas de document !</p>
@@ -97,7 +99,6 @@
             {%endif%}
 
             <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer les documents</a>
-            
         </div>
     </div><!--end documents-->
    

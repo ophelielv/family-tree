@@ -45,7 +45,7 @@ class Person
     private $id;
 
      /**
-      * @ORM\Column(name="gender", type="string", length=1)
+      * @ORM\Column(name="gender", type="string", length=1, nullable=false)
       * @Assert\Choice(choices = {"M", "F"}, message = "gender")
       */
     private $gender;
@@ -92,7 +92,7 @@ class Person
      */
     private $longitudeBirth;
 
-    /**
+    /** 
      * @var \DateTime
      *
      * @ORM\Column(name="dateOfDeath", type="datetime", nullable=true)
@@ -154,13 +154,6 @@ class Person
         return $this->mother->getId();
     }
     
-    public function getFatherId()
-    {
-        if($this->father==null){
-            return -1;
-        }
-        return $this->father->getId();
-    }
     
     /*******childrenOfMother*********/
     /**
@@ -223,6 +216,13 @@ class Person
         return $this->father;
     }
     
+    public function getFatherId()
+    {
+        if($this->father==null){
+            return -1;
+        }
+        return $this->father->getId();
+    }
     /*******childrenOfFather*********/
 
     /**
