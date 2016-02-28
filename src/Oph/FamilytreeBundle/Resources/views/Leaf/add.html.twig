@@ -7,12 +7,16 @@
 {% endblock %}
 
 {% block ophfamilytree_body %}
-<h1 class="text-center">Ajouter une nouvelle personne</h1>
+  <div class="container">
+   <div class="page-header">
+        <h1>Ajouter une nouvelle personne</h1>
+    </div>
+  </div>
 
 {{ include("OphFamilytreeBundle:Leaf:form.html.twig") }}
 
 <div class="container text-center">
-        <p> <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button">Retour</a></p>
+        <p> <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a></p>
 </div>
 
 {% endblock %}

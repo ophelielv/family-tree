@@ -69,9 +69,11 @@
                     <p>Pas de photo !</p>
                 </div>
             {%endif%}
-            <div class="container">
-                <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
-            </div>
+            {% if is_granted('ROLE_USER') %}
+                <div class="container">
+                    <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
+                </div>
+            {% endif %}
         </div>
     </div><!--end galerie-->
     
@@ -97,8 +99,9 @@
                     </div><!--end well-->
                 {%endfor%}
             {%endif%}
-
-            <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer les documents</a>
+            {% if is_granted('ROLE_USER') %}
+               <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer les documents</a>
+            {% endif %}   
         </div>
     </div><!--end documents-->
    
@@ -106,8 +109,12 @@
     
     <div class="text-center container">
         <p> 
-            <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
-            <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
+            {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
+            {% endif %}
             <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a>
         </p>
     </div>

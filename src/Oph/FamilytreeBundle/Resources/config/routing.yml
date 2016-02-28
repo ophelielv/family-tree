@@ -27,20 +27,20 @@ oph_familytree_edit_photos:
         id: \d+
 
 oph_familytree_edit_documents:
-    path:     /personne/{id}/documents/editer
+    path:     /personne/{id}/documents/edit
     defaults: { _controller: OphFamilytreeBundle:Leaf:editDocuments }
     requirements:
         id: \d+
 
 oph_familytree_edit_one_document:
-    path:     /personne/{id}/documents/editer/{idDocument}
+    path:     /personne/{id}/documents/edit/{idDocument}
     defaults: { _controller: OphFamilytreeBundle:Leaf:editOneDocument }
     requirements:
         id: \d+
         idDocument: \d+
 
 oph_familytree_delete:
-    path:     /personne/{id}/supprimer
+    path:     /personne/{id}/delete
     defaults: { _controller: OphFamilytreeBundle:Leaf:delete }
     requirements:
         id: \d+

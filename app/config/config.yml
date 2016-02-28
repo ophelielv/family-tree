@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -41,7 +41,7 @@ assetic:
         #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
-#slider slick
+#slider slick 
     assets:
       slick-eot:
         inputs: '@OphFamilytreeBundle/Resources/public/fonts/slick.eot'
@@ -109,4 +109,12 @@ liip_imagine:
             filters:
                 relative_resize: { widen: 900 }    # Transforms 50x40 to 32x26
 
+fos_user:
+    db_driver:     orm                       # Le type de BDD à utiliser, nous utilisons l'ORM Doctrine depuis le début
+    firewall_name: main                      # Le nom du firewall derrière lequel on utilisera ces utilisateurs
+    user_class:    Oph\UserBundle\Entity\User # La classe de l'entité User que nous utilisons
 
+
+services:
+    fos_user.doctrine_registry:
+        alias: doctrine

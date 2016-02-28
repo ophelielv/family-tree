@@ -4,6 +4,7 @@ security:
     # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        Oph\UserBundle\Entity\User: sha512
 
     # http://symfony.com/doc/current/book/security.html#hierarchical-roles
     role_hierarchy:
@@ -12,31 +13,35 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-
+        main:
+            id: fos_user.user_provider.username
+                
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/((profiler|wdt)|css|images|js)/
             security: false
+        
+        #main_login:
+            # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+        #    pattern:   ^/login$  
+        #    anonymous: true # On autorise alors les anonymes sur ce pare-feu
             
         main:
-            pattern:    ^/
-            anonymous:  true
-            provider:   in_memory
+            pattern:        ^/
+            anonymous:      true
+            provider:       main
             form_login:
-                login_path: login
-                check_path: login_check
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
             logout:
-                path: logout
-                target: /
-            
+                path:       fos_user_security_logout
+                target:     /
+            remember_me:
+                key:        %secret%
+                
         # the login page has to be accessible for everybody
         demo_login:
             pattern:  ^/demo/secured/login$

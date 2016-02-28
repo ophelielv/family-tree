@@ -5,6 +5,8 @@ namespace Oph\FamilytreeBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 use Oph\FamilytreeBundle\Entity\Document;
@@ -19,9 +21,12 @@ use Oph\FamilytreeBundle\Model\PersonModel;
 
 class LeafController extends Controller
 {
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function addAction(Request $request)
     {
-        $person = new Person();
+         $person = new Person();
         
         // On crée le FormBuilder grâce au service form factory
         $form = $this->createForm(new PersonType(), $person);
@@ -47,9 +52,11 @@ class LeafController extends Controller
            
     }
     
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
-        
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
@@ -77,7 +84,11 @@ class LeafController extends Controller
           'form'   => $form->createView() ));
     }
     
-public function deleteDocumentAction($id, $idDocument, Request $request)
+    
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */    
+    public function deleteDocumentAction($id, $idDocument, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
@@ -116,7 +127,10 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
                                         'form'   => $form->createView() 
                                 ) );
     }
-
+    
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deletePhotoAction($id, $idPicture, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -155,7 +169,11 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
                                         'form'   => $form->createView() 
                                 ) );
     }
+
     
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */    
     public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -191,9 +209,12 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         ));
            
     }
-    
-    public function editDocumentsAction($id, Request $request){
-        
+
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */     
+    public function editDocumentsAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
@@ -221,8 +242,12 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         ));
     }
     
-    public function editOneDocumentAction($id, $idDocument, Request $request){
         
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */ 
+    public function editOneDocumentAction($id, $idDocument, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
@@ -259,8 +284,12 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         ));
     }
     
-    public function editPhotosAction($id, Request $request){
         
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */ 
+    public function editPhotosAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('OphFamilytreeBundle:Person');
         $person = $repository->find($id);
@@ -273,7 +302,6 @@ public function deleteDocumentAction($id, $idDocument, Request $request)
         $form->handleRequest($request);
         if ($form->isValid()) 
         {
-        //    $person->uploadPictures();
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
             $em->flush();
