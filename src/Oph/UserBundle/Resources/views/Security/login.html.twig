@@ -7,19 +7,20 @@
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-        <h1>Connexion</h1><hr>
- 
+    <h1>Connexion</h1><hr>
+     
+    <p><em>Les champs sont préremplis pour les tests</em></p>
     <form action="{{ path("fos_user_security_check") }}" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         
         <div class="form-group">
             <label for="username">{{ 'security.login.username'|trans }}</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+            <input type="text" id="username" name="_username" value="user{# last_username #}" required="required" />
         </div>
         
         <div class="form-group">
             <label for="password">{{ 'security.login.password'|trans }}</label>
-            <input type="password" id="password" name="_password" required="required" />
+            <input type="password" id="password" name="_password" required="required" value="test"/>
         </div>
         
         <div class="form-group">

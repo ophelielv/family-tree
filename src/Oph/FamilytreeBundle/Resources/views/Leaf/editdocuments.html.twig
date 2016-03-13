@@ -22,12 +22,12 @@
                             <div class="caption text-center">
                                 <p><strong>{{docs.title}}</strong></p>
                                 {% if docs.dateDocument is not null %}
-                                    <p>Le {{ docs.dateDocument |date('d-m-Y')}}</p>
+                                    <p>{{ docs.dateDocument |date('d-m-Y')}}</p>
                                 {%else%}
                                     <p>Date inconnue</p>
                                 {% endif %}
-                                <p><a href=" {{ path('oph_familytree_edit_one_document', { 'id': person.id,'idDocument': docs.id}) }}" class="btn btn-default" role="button">Editer</a>
-                                    <a href="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': docs.id}) }}" class="btn btn-danger" role="button">Supprimer</a>
+                                <p><a href=" {{ path('oph_familytree_edit_one_document', { 'id': person.id,'idDocument': docs.id}) }}" class="edit"><i class="glyphicon glyphicon-pencil"></i> Editer</a>
+                                    <a href="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': docs.id}) }}" class="delete"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
                                 </p>
                             </div><!--end caption-->
                         </div><!--end thumbnail-->
@@ -39,12 +39,12 @@
         </div><!--end row-fluid-->
     </div><!--end container-->
     <hr>
-<h3 class="text-center">Ajouter</h3>
+<h3 class="text-center">Mettre en ligne de nouveaux documents</h3>
 
 {{ include("OphFamilytreeBundle:Leaf:formadddocuments.html.twig") }}
 
 <div class="container text-center">
-       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retourner à la fiche de {{person.completeName}}</person></a></p>
 </div>
 
 {% endblock %}

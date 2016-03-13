@@ -1,5 +1,6 @@
 .float-right{ float: right;}
 .tac{text-align:center;}
+.mt40{margin-top:40px;}
 
 
 /**font**/
@@ -7,7 +8,16 @@
 p,a, h4, h5 {font-family: 'Open Sans', sans-serif;}
 h1,h2,h3{font-family: 'Kreon', serif;}
 h2 { letter-spacing: 0.12rem;  margin-bottom: 32px; }
+h4 { color: black!important;}
 
+.nobold{font-weight:normal;}
+/******/
+.edit { color: green;}
+.delete { color: red;}
+.edit:hover { color: #449D44;}
+.delete:hover { color: #C9302C;}
+.edit:visited { color: #449D44;}
+.delete:visited { color: #C9302C;}
 /****************/
 .navbar-inverse .navbar-nav>li>a {     color: white;}
 .navbar-inverse .navbar-nav>li>a:hover {     color: #777;}
@@ -91,3 +101,21 @@ svg {
 
 /****/
 .barre-connexion{ float: right;     margin-right: 50px;}
+
+/****/
+.coord-form p{margin-top:15px;}
+
+.editonedocument{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.editonedocument img{
+  margin-top:10px;
+  margin-bottom: 30px;
+}
+
+.newdoc{
+  margin-top:10px;
+  background-color: #e5e5e5;
+}

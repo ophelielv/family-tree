@@ -37,15 +37,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="{{path('oph_familytree_homepage')}}">Généalogie</a>
+                      <a class="navbar-brand {% if app.request.get('_route') == 'oph_familytree_homepage' %} active {% endif %}" href="{{path('oph_familytree_homepage')}}"><i class="glyphicon glyphicon-leaf"></i> Arbre généalogique</a>
                     </div><!--end navbar header-->
-                    
-                    
-        
                     
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li {% if app.request.get('_route') == 'oph_familytree_homepage' %} class="active" {% endif %} ><a href="{{ path('oph_familytree_homepage') }}"><i class="glyphicon glyphicon-leaf"></i> Arbre<span class="sr-only">(current)</span></a></li>
                             <li {% if app.request.get('_route') == 'oph_familytree_map' %} class="active" {% endif %} ><a href="{{path('oph_familytree_map')}}">Carte</a></li>
                             <li {% if app.request.get('_route') == 'oph_familytree_add' %} class="active" {% endif %} ><a href="{{path('oph_familytree_add')}}">Ajouter</a></li>
                         </ul>

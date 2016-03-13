@@ -9,7 +9,7 @@
 {% block ophfamilytree_body %}
     
     <div class="container">
-        <h2 class="text-center">Editer la galerie</h2>
+        <h2 class="text-center">Editer la galerie photo</h2>
         <div class="row-fluid">
             {% if person.gallery is empty %}
             <p>Pas de photo !</p>
@@ -26,7 +26,7 @@
                                 {%else%}
                                     <p>Date inconnue</p>
                                 {% endif %}
-                               <p><a href="{{ path('oph_familytree_delete_photo', {'id': person.id, 'idPicture': gallery.id}) }}" class="btn btn-danger" role="button">Supprimer</a></p>
+                               <p><a href="{{ path('oph_familytree_delete_photo', {'id': person.id, 'idPicture': gallery.id}) }}" class="delete"><i class="glyphicon glyphicon-remove"></i> Supprimer</a></p>
                             </div><!--end caption-->
                         </div><!--end thumbnail-->
                     </div><!--end col-->
@@ -37,12 +37,12 @@
         </div><!--end row-fluid-->
     </div><!--end container-->
     <hr>
-<h3 class="text-center">Ajouter</h3>
+<h3 class="text-center">Mettre en ligne de nouvelles photos</h3>
 
 {{ include("OphFamilytreeBundle:Leaf:formaddphotos.html.twig") }}
 
 <div class="container text-center">
-       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retourner à la fiche de {{person.completeName}}</person></a></p>
 </div>
 
 {% endblock %}

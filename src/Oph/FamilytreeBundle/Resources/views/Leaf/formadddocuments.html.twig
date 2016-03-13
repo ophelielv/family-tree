@@ -11,7 +11,11 @@
     </div>
   </div>
       
-    
+     <div class="container">   
+    <div class=" form-group">
+       {{ form_row(form.Enregistrer) }}
+    </div>
+  </div><!--end container-->
  
     {{ form_end(form) }}
 
@@ -28,7 +32,7 @@
     var $container = $('div#oph_familytreebundle_person_uploadedDocuments');
 
     // On ajoute un lien pour ajouter une nouvelle catégorie
-    var $addLink = $('<a href="#" id="add_document" class="btn btn-info">Ajouter un document</a>');
+    var $addLink = $('<a href="#" id="add_document" class="btn btn-default">Ajouter un document supplémentaire</a>');
     $container.append($addLink);
 
     // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
@@ -58,7 +62,9 @@
       // - le texte "__name__" qu'il contient par le numéro du champ
       var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Document n°' + (index+1))
           .replace(/__name__/g, index));
-
+     
+      $prototype.attr('class','well newdoc');
+      
       // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
       addDeleteLink($prototype);
 
@@ -72,7 +78,7 @@
     // La fonction qui ajoute un lien de suppression d'une catégorie
     function addDeleteLink($prototype) {
       // Création du lien
-      $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+      $deleteLink = $('<a href="#" class="delete">Supprimer le document n°'+(index+1)+'</a>');
 
       // Ajout du lien
       $prototype.append($deleteLink);

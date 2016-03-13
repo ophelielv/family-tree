@@ -19,7 +19,8 @@ class PersonAddGalleryType extends AbstractType
                                                             'allow_add'=> true, 
                                                             'allow_delete' => true,
                                                             'attr' => array('multiple' => 'multiple')))
-                ->add('Enregistrer',    'submit');
+                          ->add('Enregistrer',    'submit', array('label'=>'Envoyer et enregistrer',
+                                                            'attr' =>array('class' =>'btn btn-warning')));
     }
 
     /**

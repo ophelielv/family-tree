@@ -10,51 +10,68 @@
 
     <div id="resume">
         <div class="container">
-            <h2 class="text-center">Résumé</h2>
-            <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
-            Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
-            <p>
-                {% if person.gender == 'F' %}Fille{% else %}Fils{%endif %} de 
-                {% if person.mother is null %}
-                    <strong>?</strong>
-                {% else %}
-                    <a href="{{ path('oph_familytree_view', {'id':person.mother.id})}}">{{person.mother.firstName}} {{person.mother.name}}</a>
-                {% endif %}
-                et
-                {% if person.father is null %}
-                    <strong>?</strong>
-                {% else %}
-                    <a href="{{ path('oph_familytree_view', {'id':person.father.id})}}">{{person.father.firstName}} {{person.father.name}}</a>.
-                {% endif %}
-            <br>
-                {% if person.gender == 'F' %}
-                    {% if person.childrenOfMother is empty %}
-                    {% else %}Mère de :
-                        <ul>
-                        {%for c in person.childrenOfMother %}
-                            <li><a href="{{ path('oph_familytree_view', {'id':c.id})}}">{{c.completeName}}</a></li>
-                        {%endfor%}
-                        </ul>
+            <div class="col-md-9">
+                <h2 class="text-center">Identité</h2>
+                <p>Né{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfBirth|date('d-m-Y')}} à {{person.placeOfBirth}}<br>
+                Décédé{% if person.gender == 'F' %}e{% endif %} le {{person.dateOfDeath|date('d-m-Y')}} à {{person.placeOfDeath}}</p>
+                <p>
+                    {% if person.gender == 'F' %}Fille{% else %}Fils{%endif %} de 
+                    {% if person.mother is null %}
+                        <strong>?</strong>
+                    {% else %}
+                        <a href="{{ path('oph_familytree_view', {'id':person.mother.id})}}" title="Voir la fiche de {{person.mother.completeName}}">{{person.mother.completeName}}</a>
+                    {% endif %}
+                    et
+                    {% if person.father is null %}
+                        <strong>?</strong>
+                    {% else %}
+                        <a href="{{ path('oph_familytree_view', {'id':person.father.id})}}"  title="Voir la fiche de {{person.father.completeName}}">{{person.father.completeName}}</a>.
+                    {% endif %}
+                <br>
+                    {% if person.gender == 'F' %}
+                        {% if person.childrenOfMother is empty %}
+                        {% else %}Mère de  
+                            {%for c in person.childrenOfMother %}
+                                <a href="{{ path('oph_familytree_view', {'id':c.id})}}"  title="Voir la fiche de {{c.completeName}}">{{c.completeName}}</a>{%if loop.last%}.{%else%}, {%endif%}
+                            {%endfor%}
+                        {%endif%}
+                    {% else %}
+                        {% if person.childrenOfFather is empty %}
+                        {% else %}Père de
+                            {%for c in person.childrenOfFather %}
+                                <a href="{{ path('oph_familytree_view', {'id':c.id})}}" title="Voir la fiche de {{c.completeName}}">{{c.completeName}}</a>{%if loop.last%}.{%else%}, {%endif%}
+                            {%endfor%}
+                        {%endif%}
                     {%endif%}
-                {% else %}
-                    {% if person.childrenOfFather is empty %}
-                    {% else %}Père de :
-                        <ul>
-                        {%for c in person.childrenOfFather %}
-                            <li><a href="{{ path('oph_familytree_view', {'id':c.id})}}">{{c.completeName}}</a></li>
-                        {%endfor%}
-                        </ul>
-                    {%endif%}
+                </p>
+            </div><!--end col-md-6-->    
+            <div class="col-md-3 offset-2 well">
+                <h3>Actions possibles</h3>
+                {% if is_granted('ROLE_USER') %} 
+                    <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="edit"><i class="glyphicon glyphicon-pencil"></i> Modifier les informations</a><br>
+                    <a href="{{ path('oph_familytree_edit_avatar', {'id': person.id}) }}" class="edit"><i class="glyphicon glyphicon-user"></i> Modifier l'avatar</a><br>
+                    <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}"class="edit"><i class="glyphicon glyphicon-camera"></i> Éditer la galerie photos</a><br>
+                    <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}"class="edit" ><i class="glyphicon glyphicon-file"></i> Éditer les documents</a><br>
+                    {# if is_granted('ROLE_ADMIN') #}
+                        <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}"class="delete"><i class="glyphicon glyphicon-remove"></i> Supprimer la fiche de {{person.completeName}}</a><br>
+                    {# endif #}
+        
+                {%else%}
+                <p><em>
+                    <i class="glyphicon glyphicon-pencil"></i> Modifier les informations<br>
+                    <i class="glyphicon glyphicon-user"></i> Modifier l'avatar<br>
+                    <i class="glyphicon glyphicon-camera"></i> Éditer la galerie photos<br>
+                    <i class="glyphicon glyphicon-file"></i> Éditer les documents<br>
+                    <i class="glyphicon glyphicon-remove"></i> Supprimer la fiche de {{person.completeName}}<br></em>
+                    <p>Vous devez vous <a href="{{ path('fos_user_security_login') }}">connecter</a>.<br>
+                    [ Identifiants tests : <strong>user</strong>, mot de passe : <strong>test</strong> ]</p>
                 {%endif%}
-            </p>
-            
-                
-        </div>
+            </div>
+        </div><!--end container-->   
     </div><!--end resume-->
 
     <div id="galerie">
         <div class="container">
-            <h2 class="text-center">Galerie</h2>
             {% if person.gallery is not empty %}
                 
                 <!--galerie slick---->
@@ -69,11 +86,6 @@
                     <p>Pas de photo !</p>
                 </div>
             {%endif%}
-            {% if is_granted('ROLE_USER') %}
-                <div class="container">
-                    <a href="{{ path('oph_familytree_edit_photos', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer la galerie</a>
-                </div>
-            {% endif %}
         </div>
     </div><!--end galerie-->
     
@@ -85,10 +97,17 @@
                 <p>Pas de document !</p>
             
             {% else %}
-            
+ 
                 {% for doc in person.listOfDocuments %}
                     <div class="well">
-                        <h4 class="text-primary">{{ doc.title }} <small>le {{doc.dateDocument|date('d-m-Y')}}</small></h4>
+                        <h4 class="text-primary">{{ doc.title }}
+                        <small> {% if doc.dateDocument is not null %}
+                                    le {{doc.dateDocument|date('d-m-Y')}}
+                                {%else%}
+                                     Date inconnue
+                                {% endif %}
+                        </small>
+                       </h4>
                         <p>{{ doc.description|raw  }}</p>
                         <button data-toggle="collapse" class="btn btn-jay btn-lg" data-target="#doc-{{doc.id}}">
                             <span class="glyphicon glyphicon-send"> Voir</span>
@@ -99,23 +118,14 @@
                     </div><!--end well-->
                 {%endfor%}
             {%endif%}
-            {% if is_granted('ROLE_USER') %}
-               <a href="{{ path('oph_familytree_edit_documents', {'id': person.id}) }}" class="btn btn-default" role="button">Ajouter - Editer les documents</a>
-            {% endif %}   
         </div>
     </div><!--end documents-->
    
 
     
     <div class="text-center container">
-        <p> 
-            {% if is_granted('ROLE_USER') %}
-                <a href="{{ path('oph_familytree_edit', {'id': person.id}) }}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('oph_familytree_delete', {'id': person.id}) }}" class="btn btn-danger" role="button"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
-            {% endif %}
-            <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a>
+        <p>
+            <a href="{{ path('oph_familytree_homepage') }}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-home"></i> Retour à l'accueil</a>
         </p>
     </div>
     

@@ -1,0 +1,23 @@
+{# formaddphotos #}
+
+<div class="container well">
+  
+  <div class="form-group">
+    <div class="col-sm-8">
+      {{ form_start(form, {'attr': {'class': 'form-horizontal'} }) }}
+      <form method="post" {{ form_enctype(form) }}>
+      {{ form_errors(form) }}
+      {{ form(form) }}
+    </div>
+  </div>
+      
+     <div class="container">   
+    <div class=" form-group">
+       {{ form_row(form.Enregistrer) }}
+    </div>
+  </div><!--end container-->
+ 
+    {{ form_end(form) }}
+
+ 
+</div><!--end container-->

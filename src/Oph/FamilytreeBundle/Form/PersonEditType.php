@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DocumentEditOneType extends AbstractType
+class PersonEditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,8 +14,6 @@ class DocumentEditOneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('Enregistrer',    'submit', array('label'=>'Enregistrer',
-                                                            'attr' =>array('class' =>'btn btn-warning')));
         $builder->remove('img');
     }
     
@@ -25,7 +23,7 @@ class DocumentEditOneType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Oph\FamilytreeBundle\Entity\Document'
+            'data_class' => 'Oph\FamilytreeBundle\Entity\Person'
         ));
     }
 
@@ -34,11 +32,11 @@ class DocumentEditOneType extends AbstractType
      */
     public function getName()
     {
-        return 'oph_familytreebundle_document_edit_one';
+        return 'oph_familytreebundle_person_edit';
     }
     
     public function getParent()
     {
-        return new DocumentType();
+        return new PersonType();
     }
 }

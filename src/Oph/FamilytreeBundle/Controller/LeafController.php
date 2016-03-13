@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Oph\FamilytreeBundle\Entity\Document;
 use Oph\FamilytreeBundle\Entity\Person;
 use Oph\FamilytreeBundle\Form\PersonType;
+use Oph\FamilytreeBundle\Form\PersonEditType;
+use Oph\FamilytreeBundle\Form\PersonEditAvatarType;
 use Oph\FamilytreeBundle\Form\DocumentType;
 use Oph\FamilytreeBundle\Form\DocumentEditOneType;
 use Oph\FamilytreeBundle\Form\PersonAddGalleryType;
@@ -53,7 +55,7 @@ class LeafController extends Controller
     }
     
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_USER')")
      */
     public function deleteAction($id, Request $request)
     {
@@ -86,7 +88,7 @@ class LeafController extends Controller
     
     
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_USER')")
      */    
     public function deleteDocumentAction($id, $idDocument, Request $request)
     {
@@ -129,7 +131,7 @@ class LeafController extends Controller
     }
     
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_USER')")
      */
     public function deletePhotoAction($id, $idPicture, Request $request)
     {
@@ -183,7 +185,7 @@ class LeafController extends Controller
             throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
         }
         
-        $form = $this->createForm(new PersonType(), $person);
+        $form = $this->createForm(new PersonEditType(), $person);
 
         // On fait le lien Requête <-> Formulaire
         // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
@@ -213,6 +215,38 @@ class LeafController extends Controller
     /**
      * @Security("has_role('ROLE_USER')")
      */     
+    public function editAvatarAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('OphFamilytreeBundle:Person');
+        $person = $repository->find($id);
+        if (null === $person) {
+            throw new NotFoundHttpException("La personne d'id ".$id." est introuvable.");
+        }
+        
+        $form = $this->createForm(new PersonEditAvatarType(), $person);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) 
+        {
+           // $person->uploadDocuments();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($person);
+            $em->flush();
+            
+            $request->getSession()->getFlashBag()->add('notice', 'Avatar modifié.');
+            return $this->redirect($this->generateUrl('oph_familytree_view', array('id' => $person->getId())));
+        }
+
+        return $this->render('OphFamilytreeBundle:Leaf:editavatar.html.twig', array(
+          'person' => $person,
+          'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */     
     public function editDocumentsAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -233,7 +267,7 @@ class LeafController extends Controller
             $em->flush();
             
             $request->getSession()->getFlashBag()->add('notice', 'Documents modifiées.');
-            return $this->redirect($this->generateUrl('oph_familytree_view', array('id' => $person->getId())));
+            return $this->redirect($this->generateUrl('oph_familytree_edit_documents', array('id' => $person->getId())));
         }
 
         return $this->render('OphFamilytreeBundle:Leaf:editdocuments.html.twig', array(
@@ -274,7 +308,7 @@ class LeafController extends Controller
             $em->flush();
             
             $request->getSession()->getFlashBag()->add('notice', 'Document modifié.');
-            return $this->redirect($this->generateUrl('oph_familytree_view', array('id' => $person->getId())));
+            return $this->redirect($this->generateUrl('oph_familytree_edit_documents', array('id' => $person->getId())));
         }
 
         return $this->render('OphFamilytreeBundle:Leaf:editonedocument.html.twig', array(
@@ -305,9 +339,9 @@ class LeafController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($person);
             $em->flush();
-            
+        
             $request->getSession()->getFlashBag()->add('notice', 'Galerie éditée.');
-            return $this->redirect($this->generateUrl('oph_familytree_view', array('id' => $person->getId())));
+            return $this->redirect($this->generateUrl('oph_familytree_edit_photos', array('id' => $person->getId())));
         }
 
         return $this->render('OphFamilytreeBundle:Leaf:editgaleriephotos.html.twig', array(

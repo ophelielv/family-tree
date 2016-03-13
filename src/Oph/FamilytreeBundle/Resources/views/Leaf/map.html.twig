@@ -50,7 +50,7 @@
         {% for p in persons %}
             {% if ( p.latitudeBirth is not null) and ( p.longitudeBirth is not null) %}
                 L.marker([{{ p.latitudeBirth }}, {{ p.longitudeBirth }} ]).addTo(map)
-                .bindPopup('<strong>{{ p.placeOfBirth }}</strong><p>Naissance de <a href="{{ path('oph_familytree_view', {'id': p.id}) }}" class="btn-jay" role="button"> {{p.completeName}}</a></p>')
+                .bindPopup('<strong>{{ p.placeOfBirth }}</strong><p>Naissance de <a href="{{ path('oph_familytree_view', {'id': p.id}) }}" title="Voir la fiche de {{p.completeName}}"> {{p.completeName}}</a></p>')
                  //<a href="{# path('oph_familytree_edit', {'id': person.id}) #}" class="btn btn-default" role="button"><i class="glyphicon glyphicon-pencil"></i> Editer la fiche</a>
                 /*.on('click', function(e) { 
                     alert(e.latlng);

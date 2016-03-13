@@ -274,8 +274,8 @@ Tree.prototype.drawNodes = function(nodes, source, sitePath){
     
   nodeEnter.append("a")
       .attr("xlink:href",  function(d){ return sitePath + "personne/" + d.id; })
-      .attr("alt", function(d){ return "+ d'informations sur " + d.name; } )
-      .attr('class','btn btn-default')
+      .attr("title", function(d){ return "+ d'informations sur " + d.name; } )
+      .attr('class','edit')
       .attr('role','button')
       //.attr('class','btn-jay')//marche pas
       .append("text")

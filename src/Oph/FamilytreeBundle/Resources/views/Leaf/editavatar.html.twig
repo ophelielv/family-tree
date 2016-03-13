@@ -1,0 +1,22 @@
+{# editdocuments.html.twig #}
+
+{% extends "OphFamilytreeBundle::layout-leaf.html.twig" %}
+
+{% block title %}
+  Avatar - {{ parent() }}
+{% endblock %}
+
+{% block ophfamilytree_body %}
+ 
+<div class="container editonedocument tac">
+    <h3 class="text-center">Modifier l'avatar de {{person.completeName}}</h3>
+    
+</div>
+
+{{ include("OphFamilytreeBundle:Leaf:formeditavatar.html.twig") }}
+
+<div class="container text-center">
+       <a href=" {{ path('oph_familytree_view', {'id': person.id})}}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche de {{person.completeName}}</a>
+</div>
+
+{% endblock %}

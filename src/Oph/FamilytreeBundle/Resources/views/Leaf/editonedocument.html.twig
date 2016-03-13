@@ -8,13 +8,17 @@
 
 {% block ophfamilytree_body %}
  
-<div class="container">
-    <h3 class="text-center">Editer</h3>
+<div class="container editonedocument tac">
+    <h3 class="text-center">Edition du document : « {{document.title}} »</h3>
+    <img src="{{  (document.img.webPath) | imagine_filter('doc_widen') }}" alt="{{document.img.alt}}"/>
+    <p><em>Pour remplacer ce document, vous devez le <a href="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': document.id}) }}" class="delete"> supprimer</a> puis en créer un nouveau. Vous pouvez éditer les informations ci-dessous.</em></p>
+
 </div>
+
 {{ include("OphFamilytreeBundle:Leaf:formadddocuments.html.twig") }}
 
 <div class="container text-center">
-       <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-success" role="button">Retour à l'édition des documents</a>
+       <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à l'édition des documents</a>
 </div>
 
 {% endblock %}

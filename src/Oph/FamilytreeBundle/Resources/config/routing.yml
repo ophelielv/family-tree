@@ -20,6 +20,12 @@ oph_familytree_edit:
     requirements:
         id: \d+
 
+oph_familytree_edit_avatar:
+    path:     /personne/{id}/avatar/edit
+    defaults: { _controller: OphFamilytreeBundle:Leaf:editAvatar }
+    requirements:
+        id: \d+
+
 oph_familytree_edit_photos:
     path:     /personne/{id}/galerie/edit
     defaults: { _controller: OphFamilytreeBundle:Leaf:editPhotos }

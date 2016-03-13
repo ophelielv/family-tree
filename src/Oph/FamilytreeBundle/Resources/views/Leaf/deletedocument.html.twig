@@ -10,14 +10,13 @@
 
     <div class="container">
         <div class="row-fluid">
-            <h3>Supprimer le document ?</h3>
-            <p><strong>{{ document.title }} </strong></p>
+            <h3>Supprimer « <strong>{{ document.title }} </strong> » ? </h3>
             <img src="{{ (document.img.webPath) | imagine_filter('my_thumb') }}" alt="{{document.img.alt}}"/>
             
             <form action="{{ path('oph_familytree_delete_document', {'id': person.id, 'idDocument': document.id}) }}" method="post">
             
             <p>
-               <input type="submit" value="Confirmer la suppression" class="btn btn-danger" />
+               <input type="submit" value="Confirmer la suppression" class="btn btn-danger mt40" />
             </p>
             {# Ceci va générer le champ CSRF #}
             {{ form_rest(form) }}
@@ -29,7 +28,7 @@
     <hr>
 
 <div class="container text-center">
-       <p> <a href="{{ path('oph_familytree_view', {'id': person.id}) }}" class="btn btn-success" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la fiche</a></p>
+       <a href=" {{ path('oph_familytree_edit_documents', {'id': person.id})}}" class="btn btn-primary" role="button"><i class="glyphicon glyphicon-chevron-left"></i> Retour</a>
 </div>
 
 

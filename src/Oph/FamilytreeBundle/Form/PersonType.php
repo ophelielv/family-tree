@@ -28,7 +28,7 @@ class PersonType extends AbstractType
             ->add('tempFather',     'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
             ->add('tempChild',      'entity',   array('class'=>'OphFamilytreeBundle:Person', 'required'  => false, 'property' => 'completeName',  'empty_value' => '--',    'empty_data'  => null, 'expanded' => false, 'multiple' => false))
             ->add('img',    new ImgType(),      array('label' => 'Choisir un fichier','required' => false))
-            ->add('Enregistrer',    'submit');
+            ->add('Enregistrer',    'submit',   array('attr' =>array('class' =>'btn btn-warning')));
     }
     
     /**
